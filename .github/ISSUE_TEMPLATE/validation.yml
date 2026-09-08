@@ -1,0 +1,66 @@
+name: Issue: 验证数据回填
+description: 你做了台架 / 落震 / 试飞，把实测数据回填到文档
+title: "[VALIDATION] "
+labels: ["validation"]
+body:
+  - type: markdown
+    value: |
+      **这是本仓库最有价值的贡献类型。** 实测数据能让 `⚠待验证` 被摘掉。
+
+  - type: dropdown
+    id: testtype
+    attributes:
+      label: 试验类型
+      options:
+        - T 级 - 台架（拉力 / 静力 / 压缩 / 剪切）
+        - G 级 - 地面（称重 / 倾覆 / 起旋消旋 / LoRa）
+        - A1 - 尾坐悬停
+        - A2 - 过渡
+        - A3 - 巡航与盘旋
+        - A4/L1~L4 - 迫降
+        - A5 - 全自主剖面
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: docref
+    attributes:
+      label: 对应 [12 章](../../docs/12-测试与验证流程.md) 的试验编号
+      placeholder: "T-04 / L1 / A3-10"
+    validations:
+      required: true
+
+  - type: textarea
+    id: setup
+    attributes:
+      label: 试验条件
+      description: 海拔、气温、密度、风速、样机状态、传感器型号与精度
+    validations:
+      required: true
+
+  - type: textarea
+    id: data
+    attributes:
+      label: 实测数据
+      description: 原始数字（表格最好）。**不要只写"结果不错"**
+    validations:
+      required: true
+
+  - type: textarea
+    id: compare
+    attributes:
+      label: 与文档推算值的对比
+      description: 偏差多少？你觉得偏差来自哪里？
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: 安全声明
+      options:
+        - label: 试验在合法场地、由具备相应资质/经验的人员、按安全规程进行
+          required: true
+        - label: 我不上传任何灾区影像、他人隐私或涉密内容
+          required: true
