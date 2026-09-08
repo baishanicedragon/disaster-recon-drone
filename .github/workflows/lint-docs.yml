@@ -1,0 +1,96 @@
+name: Lint Docs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # 每月 1 日 03:00 UTC 检查一次外链（文档里的链接容易烂）
+    - cron: "0 3 1 * *"
+
+jobs:
+  markdown-lint:
+    name: Markdown 格式检查
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 运行 markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: |
+            **/*.md
+            !node_modules/**/*
+        continue-on-error: true   # 格式问题不阻断，仅提示
+
+  structure-check:
+    name: 仓库结构与命名检查
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 检查 docs 编号连续性
+        run: |
+          echo "== docs 目录文件 =="
+          ls -1 docs/ || true
+          missing=0
+          for i in $(seq -w 0 14); do
+            if ! ls docs/${i}-*.md >/dev/null 2>&1; then
+              echo "::warning::缺少 docs/${i}-*.md"
+              missing=1
+            fi
+          done
+          exit 0
+
+      - name: 检查必需文件存在
+        run: |
+          for f in README.md LICENSE NOTICE CONTRIBUTING.md \
+                   CODE_OF_CONDUCT.md SECURITY.md CHANGELOG.md \
+                   CITATION.cff .gitignore; do
+            if [ ! -f "$f" ]; then
+              echo "::error::缺少必需文件 $f"
+              exit 1
+            fi
+          done
+          echo "必需文件齐全"
+
+      - name: 检查禁止内容（武器化 / 火工品）
+        run: |
+          # 本仓库红线：不得出现武器化设计内容
+          # 这里只检查是否有人在 docs 中加入明显违规关键词
+          if grep -rniE "(战斗部|warhead|弹药|explosive|火工品|detonator)" docs/ \
+             --include="*.md" | grep -viE "(无战斗部|不含|不得|禁止|红线|no warhead|none)" ; then
+            echo "::error::docs/ 中出现疑似武器化内容，请人工复核"
+            exit 1
+          fi
+          echo "未发现武器化内容"
+
+      - name: 检查是否误传影像/二进制
+        run: |
+          bad=$(find . -path ./.git -prune -o -type f \
+                \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \
+                   -o -name "*.mp4" -o -name "*.bin" -o -name "*.tlog" \) -print)
+          if [ -n "$bad" ]; then
+            echo "::error::仓库中不应包含影像或飞行日志二进制："
+            echo "$bad"
+            exit 1
+          fi
+          echo "未发现影像/二进制文件"
+
+  link-check:
+    name: 外链可用性检查
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - name: 抽取并校验 docs/13 中的外链
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --accept 200,203,206,429
+            --exclude-mail
+            --exclude-path "./.github"
+            "./docs/13-开源资源与驱动索引.md"
+        continue-on-error: true   # 厂商文档常变动，失败只提示
