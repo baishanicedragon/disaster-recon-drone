@@ -1,0 +1,55 @@
+name: Issue: 风险 / 失效模式
+description: 补充我没想到的失效模式，或指出某个缓解措施不够
+title: "[RISK] "
+labels: ["risk"]
+body:
+  - type: markdown
+    value: |
+      本设计**从未飞过**。任何你预见到的失效，都比我现在写的纸面数字有价值。
+
+  - type: input
+    id: location
+    attributes:
+      label: 涉及环节
+      description: 自旋段 / 过渡 / 巡航 / 盘旋 / 迫降 / 结构 / 电池 / 软件 / 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: failure
+    attributes:
+      label: 失效模式
+      description: 什么会坏？怎么坏的？
+    validations:
+      required: true
+
+  - type: textarea
+    id: consequence
+    attributes:
+      label: 后果
+      description: 整机损失 / 数据丢失 / 人身伤害 / 任务失败？
+    validations:
+      required: true
+
+  - type: dropdown
+    id: likelihood
+    attributes:
+      label: 可能性
+      options: ["高", "中", "低"]
+    validations:
+      required: true
+
+  - type: textarea
+    id: mitigation
+    attributes:
+      label: 建议的缓解措施
+      description: 如果有
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: 安全相关
+      options:
+        - label: 这个失效可能导致人身伤害 → 我会另开 [SAFETY] Issue
