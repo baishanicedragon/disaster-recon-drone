@@ -1,0 +1,91 @@
+# 通用
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+*.tmp
+*~
+
+# 编辑器 / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# KiCad
+*-bak
+*.kicad_pcb-bak
+*.sch-bak
+fp-info-cache
+*.kicad_prl
+gerbers/
+_autosave-*
+
+# FreeCAD / CAD
+*.fcstd1
+*.FCStd1
+
+# 固件构建产物
+*.elf
+*.bin
+*.hex
+*.map
+build/
+cmake-build-*/
+.zephyr/
+
+# 飞行日志与影像（可能包含敏感信息，**绝不入库**）
+*.bin
+*.tlog
+*.ulg
+*.ulog
+*.log
+logs/
+flight_logs/
+imagery/
+photos/
+*.jpg
+*.jpeg
+*.png
+*.raw
+*.dng
+*.mp4
+
+# DEM / 地理数据（体积大，用脚本下载）
+*.tif
+*.tiff
+*.geotiff
+*.hgt
+*.terrain
+dem/
+terrain/
+
+# 模型权重（许可复杂，不入库）
+*.pt
+*.onnx
+*.tflite
+*.kmodel
+weights/
+
+# 打包产物
+*.zip
+*.tar.gz
+*.7z
+
+# 本地笔记（不公开）
+TODO.local.md
+*.private.md
