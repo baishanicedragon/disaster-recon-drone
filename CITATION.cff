@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+message: "如果你引用了本仓库，请注明它是未经实飞验证的 AI 辅助设计研究文档。"
+title: "HDRS-1「迅鸢」高原峡谷自主侦察无人机设计文档"
+abstract: >-
+  面向 2026 年 8 月 26 日西藏吉隆口岸特大泥石流场景的一份纸面设计研究：
+  一台小于 15 kg 的尾坐式垂直起降无人机，采用可折叠弹翼与分时自旋稳定，
+  在无需操作员干预的条件下自主穿越深切峡谷、于灾区上空盘旋拍摄高分辨率影像，
+  并以泡沫机头溃缩吸能方式在预设软质回收场受控迫降、整机回收数据。
+  全部参数未经风洞与实飞验证，属个人学习产物。
+authors:
+  - name: "本仓库贡献者"
+type: "dataset"
+version: "0.2.0"
+date-released: "2026-09-08"
+license: "MIT"
+repository-code: "https://github.com/<your-account>/hdr-recon-drone"
+keywords:
+  - UAV
+  - tailsitter
+  - VTOL
+  - disaster-reconnaissance
+  - autonomous-navigation
+  - terrain-following
+  - crash-landing
+  - energy-absorbing-structure
+  - Gyirong
+  - 无人机
+  - 灾区侦察
+  - 自主导航
+  - 尾坐式垂直起降
+preferred-citation:
+  type: "manual"
+  title: "HDRS-1「迅鸢」高原峡谷自主侦察无人机设计文档 v0.2.0"
+  year: 2026
+  url: "https://github.com/baishanicedragon/disaster-recon-drone"
+  authors:
+    - name: "本仓库贡献者"
+  note: >-
+    AI 辅助设计 / 个人学习产物。所有参数未经实飞验证，不构成任何工程交付依据。
