@@ -1,0 +1,57 @@
+name: Issue: 参数勘误 / Errata
+description: 报告文档中写错的计算、单位、公式或选型
+title: "[ERRATA] "
+labels: ["errata"]
+body:
+  - type: markdown
+    value: |
+      感谢！**算错的数是这个仓库最需要被找出来的东西。**
+
+  - type: input
+    id: location
+    attributes:
+      label: 位置
+      description: 哪个文件、哪一节？
+      placeholder: "docs/05-动力系统与配电.md · 5.2.2 悬停功率"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: 当前写法
+      description: 把原文抄下来（含公式或数字）
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题在哪
+      description: 具体错在哪？单位？系数？公式适用条件？
+    validations:
+      required: true
+
+  - type: textarea
+    id: correction
+    attributes:
+      label: 你的修正
+      description: 给出正确的计算过程与结果
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 依据
+      description: 教材/论文/数据手册/实测？请给出可核查的来源
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 确认
+      options:
+        - label: 我确认这不是"我觉得应该这样"，而是有可核查依据的错误
+          required: true
