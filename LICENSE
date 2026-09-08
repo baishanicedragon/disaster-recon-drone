@@ -1,0 +1,52 @@
+MIT License
+
+Copyright (c) 2026 HDRS-1「迅鸢」文档项目贡献者
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+硬件设计文件（Hardware Design Files）的附加许可
+================================================================================
+
+本仓库中位于 `hardware/` 目录、以及 docs/ 中所描述的**硬件设计**
+（原理图、PCB 布局、结构设计、BOM 中所体现的技术实现），
+除非另有明确标注，一律采用 **CERN Open Hardware Licence Version 2 - Strongly
+Reciprocal（CERN-OHL-S v2）** 授权。
+
+完整条款见：https://ohwr.org/project/cernohl/wikis/Documents/CERN-OHL-version-2
+
+要点摘要（**不构成法律文本，以官方条款为准**）：
+  · 你可以制造、修改、分发基于本硬件设计的产品；
+  · 若你分发**修改后的硬件设计**，必须以同样的 CERN-OHL-S v2 开源；
+  · 你必须保留原始版权声明与许可文本。
+
+================================================================================
+不予授权的事项（Disclaimer）
+================================================================================
+
+本许可**仅覆盖**文档与代码本身的著作权，**不覆盖、也不暗示**以下任何内容：
+
+  1. 任何适航性、安全性、可靠性或合规性的担保；
+  2. 任何专利、商标或其他知识产权的授权（除非相应许可明示）；
+  3. 任何在中华人民共和国或其他司法管辖区内合法制造、登记、运行
+     无人驾驶航空器的资质、许可或批准；
+  4. 任何因使用本仓库内容而产生的人身伤害、财产损失或法律责任。
+
+本仓库所述装置为**纯侦察载荷设计**，不含战斗部、火工品或抛射杀伤元件。
+任何将其武器化的改动均不在本许可的支持范围内，且违背发布初衷。
