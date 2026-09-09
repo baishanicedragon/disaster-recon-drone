@@ -22,6 +22,7 @@
 ```
 assets/
 ├── README.md            ← 本文件
+├── 3d/                  ← **v0.4 双翼 3D 参考产物**（离线单文件 HTML + OBJ，见下）
 ├── drawings/            ← 图纸导出（PDF / DXF / SVG）
 │   ├── 01-general-arrangement.pdf
 │   ├── 02-nose-energy-absorber.pdf
@@ -76,6 +77,8 @@ assets/
 
 ## 相关文档
 
+- [assets/3d/README.md](./3d/README.md) ← **v0.4 双翼静态模型与 72 s 任务剖面动画**
+- [docs/03-总体方案与气动布局.md](../docs/03-总体方案与气动布局.md)
 - [docs/04-结构设计与材料.md](../docs/04-结构设计与材料.md)
 - [docs/06-末端迫降与泡沫机头吸能.md](../docs/06-末端迫降与泡沫机头吸能.md)
 - [hardware/README.md](../hardware/README.md)

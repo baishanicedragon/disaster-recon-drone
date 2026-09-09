@@ -41,7 +41,7 @@
 3. 提交信息用 [Conventional Commits](https://www.conventionalcommits.org/zh-hans/)：
    ```
    fix: 修正悬停功率中空气密度的取值错误
-   docs: 补充机翼折叠机构的失效模式
+   docs: 补充双翼收拢/撑开机构的失效模式
    feat: 增加 VIO 辅助导航方案
    chore: 更新开源资源索引
    ```
