@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HDRS-1「迅鸢」· 构型与任务动画</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #0b0f14; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", system-ui, sans-serif;
+    color: #dbe4ee; user-select: none;
+  }
+  #stage { position: fixed; inset: 0; }
+  #stage canvas { display: block; }
+
+  #ui {
+    position: fixed; top: 0; right: 0; width: 306px; height: calc(100% - 62px);
+    padding: 12px 12px 12px 0; overflow-y: auto; z-index: 5;
+  }
+  #ui::-webkit-scrollbar { width: 6px; }
+  #ui::-webkit-scrollbar-thumb { background: #2b3644; border-radius: 3px; }
+
+  .hd { padding: 10px 14px; background: rgba(16,22,30,.86); border-left: 3px solid #d6453f; border-radius: 6px; margin-bottom: 8px; }
+  .hd .tt { font-size: 15px; font-weight: 700; letter-spacing: .3px; }
+  .hd .sb { font-size: 11px; color: #8fa3b8; margin-top: 4px; line-height: 1.5; }
+
+  .grp { background: rgba(16,22,30,.78); border-radius: 6px; padding: 9px 11px; margin-bottom: 8px; }
+  .grp .lbl2 { font-size: 11px; color: #7d93aa; letter-spacing: 1px; margin-bottom: 6px; }
+  .grp label { display: block; font-size: 12px; color: #c3d0de; margin: 5px 0; cursor: pointer; }
+  .grp input[type=range] { width: 100%; accent-color: #39d0d8; }
+  .grp.note { font-size: 11px; color: #8296ab; line-height: 1.6; }
+  .grp.note b { color: #b9c9d9; }
+
+  .rd { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; border-bottom: 1px dashed rgba(120,140,165,.14); }
+  .rd span { color: #7d93aa; }
+  .rd b { color: #e8f1fa; font-variant-numeric: tabular-nums; }
+
+  .ph {
+    display: block; width: 100%; text-align: left; background: rgba(28,38,50,.7);
+    border: 1px solid transparent; border-radius: 5px; color: #c3d0de;
+    padding: 6px 9px; margin-bottom: 4px; cursor: pointer; font-family: inherit;
+  }
+  .ph b { display: block; font-size: 12px; font-weight: 600; }
+  .ph i { display: block; font-style: normal; font-size: 10.5px; color: #7d93aa; margin-top: 2px; line-height: 1.45; }
+  .ph:hover { background: rgba(40,54,70,.85); }
+  .ph.on { border-color: #39d0d8; background: rgba(57,208,216,.14); }
+  .ph.on b { color: #7fe7ec; }
+
+  .btns { display: flex; flex-wrap: wrap; gap: 4px; }
+  .btns button {
+    flex: 1 1 44%; background: rgba(28,38,50,.8); border: 1px solid rgba(120,140,165,.2);
+    color: #c3d0de; border-radius: 4px; padding: 5px 4px; font-size: 11px; cursor: pointer; font-family: inherit;
+  }
+  .btns button:hover { background: rgba(57,208,216,.18); border-color: #39d0d8; }
+
+  #bar {
+    position: fixed; left: 0; bottom: 0; right: 306px; height: 62px; z-index: 5;
+    display: flex; align-items: center; gap: 10px; padding: 0 14px;
+    background: linear-gradient(0deg, rgba(11,15,20,.96), rgba(11,15,20,.55));
+  }
+  #bar button {
+    background: rgba(28,38,50,.9); border: 1px solid rgba(120,140,165,.25); color: #dbe4ee;
+    border-radius: 5px; padding: 7px 13px; font-size: 12px; cursor: pointer; font-family: inherit;
+  }
+  #bar button:hover { border-color: #39d0d8; color: #7fe7ec; }
+  #bar select {
+    background: rgba(28,38,50,.9); border: 1px solid rgba(120,140,165,.25); color: #dbe4ee;
+    border-radius: 5px; padding: 6px 8px; font-size: 12px; font-family: inherit;
+  }
+  #bar .sp { font-size: 12px; color: #7d93aa; }
+  #s-t { accent-color: #39d0d8; }
+
+  #labels { position: fixed; inset: 0; pointer-events: none; z-index: 3; }
+  .lbl {
+    position: absolute; transform: translate(-50%, -50%); white-space: nowrap;
+    font-size: 11px; color: #cfe6ee; background: rgba(11,20,26,.72);
+    border: 1px solid rgba(57,208,216,.35); border-radius: 3px;
+    padding: 2px 6px; margin-top: -26px;
+  }
+
+  #part-info {
+    position: fixed; left: 14px; bottom: 74px; max-width: 330px; z-index: 6; display: none;
+    background: rgba(14,22,30,.94); border: 1px solid rgba(57,208,216,.4);
+    border-left: 3px solid #39d0d8; border-radius: 6px; padding: 9px 12px;
+  }
+  #part-info b { display: block; font-size: 13px; color: #7fe7ec; }
+  #part-info div { font-size: 11.5px; color: #a9bccd; margin-top: 4px; line-height: 1.55; }
+
+  #hint {
+    position: fixed; left: 14px; top: 14px; z-index: 4; font-size: 11px; color: #6d8296;
+    background: rgba(11,15,20,.6); padding: 6px 10px; border-radius: 5px; line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="labels"></div>
+<div id="ui"></div>
+<div id="bar"></div>
+<div id="part-info"></div>
+<div id="hint">拖拽旋转 · 滚轮缩放 · 点击部件查看说明<br>高度按 1:20 压缩显示，读数栏为真实值</div>
+
+<script>/*__PROPGEOM__*/</script>
+<script id="threeLib" type="text/plain">/*__THREE__*/</script>
+<script type="module">
+const THREE = await (async () => {
+  const src = document.getElementById('threeLib').textContent;
+  const url = URL.createObjectURL(new Blob([src], { type: 'text/javascript' }));
+  const mod = await import(url);
+  URL.revokeObjectURL(url);
+  return mod;
+})();
+/*__CORE__*/
+/*__ANIM__*/
+</script>
+</body>
+</html>

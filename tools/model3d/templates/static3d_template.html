@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HDRS-1「迅鸢」v0.3.1c · 静态构型</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #0b0f14; }
+  body { font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif; color: #dbe4ee; }
+  #c { position: fixed; inset: 0; }
+  #c canvas { display: block; }
+
+  .panel {
+    position: fixed; top: 14px; left: 14px; z-index: 5; width: 272px;
+    background: rgba(14,20,28,.9); border: 1px solid rgba(120,140,165,.28);
+    border-left: 3px solid #39d0d8; border-radius: 8px; padding: 12px 14px;
+    backdrop-filter: blur(4px);
+  }
+  .panel h1 { font-size: 15px; margin: 0 0 2px 0; color: #f0f6fc; letter-spacing: .5px; }
+  .panel .ver { font-size: 11px; color: #7fe7ec; margin-bottom: 8px; }
+  .panel .sub { font-size: 11px; color: #7d93aa; line-height: 1.55; margin-bottom: 4px; }
+  .row { display: flex; justify-content: space-between; font-size: 12px; padding: 2.5px 0; border-bottom: 1px dashed rgba(120,140,165,.12); }
+  .row span { color: #7d93aa; }
+  .row b { color: #e8f1fa; font-variant-numeric: tabular-nums; }
+  .warn { color: #ffb84d; }
+
+  .legend { margin-top: 9px; padding-top: 8px; border-top: 1px solid rgba(120,140,165,.2); }
+  .lg { display: flex; align-items: center; gap: 7px; font-size: 11.5px; color: #b9c9d9; padding: 1.5px 0; }
+  .lg i { width: 11px; height: 11px; border-radius: 2px; display: inline-block; flex: 0 0 auto; }
+
+  #ctl {
+    position: fixed; left: 14px; bottom: 14px; z-index: 5;
+    display: flex; gap: 6px; flex-wrap: wrap; max-width: 420px;
+  }
+  #ctl button {
+    background: rgba(28,38,50,.9); border: 1px solid rgba(120,140,165,.28); color: #cfe0ee;
+    border-radius: 5px; padding: 6px 11px; font-size: 11.5px; cursor: pointer; font-family: inherit;
+  }
+  #ctl button:hover { border-color: #39d0d8; color: #7fe7ec; }
+  #ctl button.on { border-color: #39d0d8; background: rgba(57,208,216,.16); color: #7fe7ec; }
+
+  #hint {
+    position: fixed; right: 14px; bottom: 14px; z-index: 4;
+    font-size: 11px; color: #6d8296; text-align: right; line-height: 1.6;
+    background: rgba(11,15,20,.55); padding: 6px 10px; border-radius: 5px;
+  }
+</style>
+</head>
+<body>
+<div id="c"></div>
+
+<div class="panel">
+  <h1>HDRS-1「迅鸢」</h1>
+  <div class="ver">高原峡谷自主侦察无人机 · 构型 v0.3.1c（尾吊动力）· 静态几何校验稿</div>
+  <div class="sub">X = STA(mm)：机头 0 → 机尾 1580 · Y 上 · Z 侧（主翼沿 ±Z）<br>巡航展开构型 · 单位与 docs 一致</div>
+  <div class="row"><span>全长</span><b>1580 mm</b></div>
+  <div class="row"><span>MTOW / T/W</span><b>12.58 kg / —</b></div>
+  <div class="row"><span>主翼</span><b>展 2000 · AC@900 · MAC 315</b></div>
+  <div class="row"><span>推进</span><b>4×13″ X 型 90°，桨心 R245</b></div>
+  <div class="row"><span>桨盘面 STA</span><b>1460（尾翼前 40）</b></div>
+  <div class="row"><span>十字尾翼</span><b class="warn">1500–1580（暂画值）</b></div>
+  <div class="row"><span>电池压舱 / CG</span><b>@880 → CG 924 · SM +7.6%</b></div>
+  <div class="legend">
+    <div class="lg"><i style="background:#d6453f"></i>A 吸能机头（触地端）</div>
+    <div class="lg"><i style="background:#93a2b3"></i>机身筒 C–F（载荷/航电/后机身）</div>
+    <div class="lg"><i style="background:#3e7fb0"></i>主翼（背脊剪刀折叠·展开态）</div>
+    <div class="lg"><i style="background:#4d5866"></i>桨臂（X 型 90° 十字）</div>
+    <div class="lg"><i style="background:#e2a13c"></i>13″ 折叠桨（45° 示位）</div>
+    <div class="lg"><i style="background:#4fa37e"></i>平尾 / <i style="background:#58b2a4"></i>垂尾</div>
+  </div>
+</div>
+
+<div id="ctl">
+  <button id="b-rot" class="on">自动旋转</button>
+  <button id="b-wire">线框</button>
+  <button id="b-v-side">侧视</button>
+  <button id="b-v-top">俯视</button>
+  <button id="b-v-front">前视(机头)</button>
+  <button id="b-v-rear">后视(机尾)</button>
+  <button id="b-reset">复位透视</button>
+</div>
+<div id="hint">拖拽旋转 · 滚轮缩放<br>尾翼几何为暂画占位，待用户定稿</div>
+
+<script id="objdata" type="text/plain">/*__OBJ__*/</script>
+<script id="threeLib" type="text/plain">/*__THREE__*/</script>
+<script type="module">
+const THREE = await (async () => {
+  const src = document.getElementById('threeLib').textContent;
+  const url = URL.createObjectURL(new Blob([src], { type: 'text/javascript' }));
+  const mod = await import(url);
+  URL.revokeObjectURL(url);
+  return mod;
+})();
+
+/* ---------- OBJ 解析（v + usemtl + f，无材质文件） ---------- */
+const MAT_COLOR = {
+  nose: 0xd6453f, hull: 0x93a2b3, wing: 0x3e7fb0,
+  arm: 0x4d5866, motor: 0x6a7683, prop: 0xe2a13c,
+  tailh: 0x4fa37e, tailv: 0x58b2a4
+};
+function parseOBJ(text) {
+  const mats = {};
+  let cur = null, vs = [];
+  for (const line of text.split('\n')) {
+    const t = line.trim();
+    if (!t || t[0] === '#') continue;
+    if (t.startsWith('v ')) {
+      const p = t.slice(2).trim().split(/\s+/).map(Number);
+      vs.push(p[0], p[1], p[2]);
+    } else if (t.startsWith('usemtl ')) {
+      cur = t.slice(7).trim();
+      if (!mats[cur]) mats[cur] = [];
+    } else if (t.startsWith('f ')) {
+      const idx = t.slice(2).trim().split(/\s+/).map(s => parseInt(s.split('/')[0], 10) - 1);
+      if (idx.length === 3) {
+        mats[cur].push(vs[idx[0] * 3], vs[idx[0] * 3 + 1], vs[idx[0] * 3 + 2],
+                       vs[idx[1] * 3], vs[idx[1] * 3 + 1], vs[idx[1] * 3 + 2],
+                       vs[idx[2] * 3], vs[idx[2] * 3 + 1], vs[idx[2] * 3 + 2]);
+      }
+    }
+  }
+  return mats;
+}
+
+/* ---------- 场景 ---------- */
+const W = () => window.innerWidth, H = () => window.innerHeight;
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(W(), H());
+document.getElementById('c').appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0b0f14);
+const camera = new THREE.PerspectiveCamera(42, W() / H(), 50, 40000);
+
+scene.add(new THREE.HemisphereLight(0xdfe9ff, 0x2a3140, 0.55));
+const sun = new THREE.DirectionalLight(0xffffff, 1.25);
+sun.position.set(2600, 3800, 1900);
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0x7fb4ff, 0.35);
+fill.position.set(-2200, 900, -2600);
+scene.add(fill);
+
+const objText = document.getElementById('objdata').textContent;
+const groups = parseOBJ(objText);
+const meshes = [];
+for (const [name, arr] of Object.entries(groups)) {
+  if (!arr.length) continue;
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(arr, 3));
+  geo.computeVertexNormals();
+  const mat = new THREE.MeshStandardMaterial({
+    color: MAT_COLOR[name] ?? 0xcccccc,
+    roughness: 0.62, metalness: 0.18,
+    side: THREE.DoubleSide, flatShading: true
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.userData.matName = name;
+  scene.add(mesh);
+  meshes.push(mesh);
+}
+
+// 参照网格 + 标尺
+const grid = new THREE.GridHelper(4200, 21, 0x2a3c52, 0x20262e);
+grid.position.y = -520;
+scene.add(grid);
+const totalTri = meshes.reduce((s, m) => s + m.geometry.attributes.position.count / 3, 0);
+
+// 桨盘扫掠环：4 盘心距轴 245、内缘 r80 外缘 r410（= ⌀820 外廓，供目视校验）
+const ringMat = new THREE.MeshBasicMaterial({
+  color: 0x39d0d8, transparent: true, opacity: 0.22,
+  side: THREE.DoubleSide, depthWrite: false
+});
+for (const [dy, dz] of [[1, 0], [0, 1], [-1, 0], [0, -1]]) {
+  const rm = new THREE.Mesh(new THREE.RingGeometry(80, 410, 72), ringMat);
+  rm.rotation.y = Math.PI / 2;
+  rm.position.set(1460, 245 * dy, 245 * dz);
+  scene.add(rm);
+}
+// 桨心标记点
+const dotMat = new THREE.MeshBasicMaterial({ color: 0x39d0d8 });
+for (const [dy, dz] of [[1, 0], [0, 1], [-1, 0], [0, -1]]) {
+  const dm = new THREE.Mesh(new THREE.SphereGeometry(8, 10, 8), dotMat);
+  dm.position.set(1460, 245 * dy, 245 * dz);
+  scene.add(dm);
+}
+
+/* ---------- 简易轨道相机 ---------- */
+const target = new THREE.Vector3(700, 40, 0);
+let theta = -0.55, phi = 0.32, dist = 5200, autoRot = true, wire = false;
+const clampPhi = 0.02;
+
+function camPos() {
+  const cp = Math.cos(phi);
+  return new THREE.Vector3(
+    target.x + dist * cp * Math.sin(theta),
+    target.y + dist * Math.sin(phi),
+    target.z + dist * cp * Math.cos(theta)
+  );
+}
+camera.position.copy(camPos()); camera.lookAt(target);
+
+let dragging = false, px = 0, py = 0;
+const el = renderer.domElement;
+el.addEventListener('pointerdown', e => { dragging = true; px = e.clientX; py = e.clientY; el.setPointerCapture(e.pointerId); });
+el.addEventListener('pointermove', e => {
+  if (!dragging) return;
+  const dx = e.clientX - px, dy = e.clientY - py;
+  px = e.clientX; py = e.clientY;
+  theta -= dx * 0.0055; phi += dy * 0.0055;
+  phi = Math.max(-clampPhi, Math.min(Math.PI / 2.02, phi));
+  camera.position.copy(camPos()); camera.lookAt(target);
+});
+el.addEventListener('pointerup', () => dragging = false);
+el.addEventListener('wheel', e => {
+  e.preventDefault();
+  dist *= (e.deltaY > 0 ? 1.09 : 0.92);
+  dist = Math.max(900, Math.min(26000, dist));
+  camera.position.copy(camPos()); camera.lookAt(target);
+}, { passive: false });
+
+/* ---------- UI ---------- */
+function view(th, ph, d) {
+  theta = th; phi = ph; if (d) dist = d;
+  camera.position.copy(camPos()); camera.lookAt(target);
+}
+const bRot = document.getElementById('b-rot');
+bRot.addEventListener('click', () => { autoRot = !autoRot; bRot.classList.toggle('on', autoRot); });
+const bWire = document.getElementById('b-wire');
+bWire.addEventListener('click', () => {
+  wire = !wire; bWire.classList.toggle('on', wire);
+  meshes.forEach(m => m.material.wireframe = wire);
+});
+document.getElementById('b-v-side').addEventListener('click', () => view(0.0, 0.05, 4600));
+document.getElementById('b-v-top').addEventListener('click', () => view(0.0, 1.50, 5400));
+document.getElementById('b-v-front').addEventListener('click', () => view(-Math.PI / 2, 0.0, 4600));
+document.getElementById('b-v-rear').addEventListener('click', () => view(Math.PI / 2, 0.0, 4600));
+document.getElementById('b-reset').addEventListener('click', () => { autoRot = true; bRot.classList.add('on'); view(-0.55, 0.32, 5200); });
+
+/* ---------- 主循环 ---------- */
+function tick() {
+  requestAnimationFrame(tick);
+  if (autoRot) { theta += 0.0032; camera.position.copy(camPos()); camera.lookAt(target); }
+  renderer.render(scene, camera);
+}
+window.addEventListener('resize', () => {
+  camera.aspect = W() / H(); camera.updateProjectionMatrix();
+  renderer.setSize(W(), H());
+});
+tick();
+console.log('[v0.3.1c] meshes:', meshes.length, 'tris:', totalTri);
+</script>
+</body>
+</html>

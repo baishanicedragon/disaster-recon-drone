@@ -7,6 +7,82 @@
 
 ---
 
+## [0.7.0] — 2026-09-10 · **目录层"如何构建"示例 + 著作权与真人作者声明**
+
+> 触发原因：盘点发现 `hardware/ firmware/ mission/ models/` 四个目录**只有 README 占位**——
+> README 里画了完整目录树，树上一个文件都没有，且正文存在**引用不存在文件的悬空引用**
+> （"见 `interface/pinmap.md`""完整列表见 `ardupilot/params/`"）；
+> 另根目录 20+ 个计算/建模脚本未入库，导致文档里的数字**不可复算**、3D 资产**不可重建**。
+> 用户要求：一次性补齐到**让实际使用者"知晓如何构建"**的水平
+> ——无需完整代码，但必须有明确指示、引用的模块包名称与位置、芯片组走线基本规则。
+> 同时按用户要求更新**版权与真人作者声明**。
+
+### ✅ 新增（示例 / 参考实现 · 非可交付成品）
+
+| 目录 | 新增内容 |
+|:---|:---|
+| `hardware/`（6） | **`interface/pinmap.md`（信号唯一真源）**：电源网络、总线分配、STM32H7 引脚分配（示例封装）、视觉 STM32N6 接口、`HW-IL` 硬件互锁表与失效安全方向、接插件定义、**芯片组走线规则**（CAN 120 Ω 终端 / I²C 上拉 / SPI 等长 / DShot 串阻 / MIPI CSI-2 100 Ω 差分对内 ±0.15 mm / BGA 扇出 / 主回路 2 oz 载流 / 海拔 5000 m 爬电 ×1.4）、**与 docs/18 句柄的对应表**；`pcb/{power-distribution,fc-carrier,payload-board}/README.md`（器件含封装 + 走线 + 测试点 + 检查清单）；`mechanical/README.md`；`bom/bom.csv`（36 行示例，与 docs/10 同步） |
+| `firmware/`（11） | `ardupilot/params/` **4 个可加载 `.param`** + 参数说明 README（含 `SCR_USER1~4` 存自定义门控值）；`lua/` ×3（`energy_manager` 强制返航、`camera_trigger` 等距触发、`abort_logic` 改平失败备用剖面）；`transition_controller/`（README + `dragclimb_ctrl.c` + `deploy_ctrl.c` + **门控真值表单测**）；`vision/README.md`；`tools/README.md`（log_parser + SITL） |
+| `mission/`（12） | `dem/`（源清单 + `download.sh` 骨架）；`scripts/` ×6（`01_fill_dem` 填洼、`02_extract_valley` 谷网、`03_route` Dijkstra+坡度惩罚、`04_clearance` **走廊内最高地形**、`05_export` QGC WPL 110 + .terrain、`check_route` M-01~M-07）；**`examples/demo_waypoints.wpl` 样例航线 + `demo_report.md` 样例检查报告**（虚构坐标）；`field/preflight_checklist.md` + `field/site_survey.md`（L-01~L-06） |
+| `models/`（3） | `data.yaml`（5 类 + 伦理红线）、`train/README.md`、`convert/README.md`（ONNX→INT8→NPU 三条路线） |
+| `tools/`（19） | **计算与 3D 建模脚本入库**：`calc/`（双翼气动、CG、收拢校核、时间线、v0.4 复算）×6、`model3d/`（OBJ/动画生成 + 前端 + 模板）×11、README 含**数字溯源表**（哪个脚本对应文档哪张表） |
+| `assets/3d/archive/`（8） | 历史构型归档：v0.3 / v0.3.1 / v0.3.1b / v0.3.1c 三视图与静态模型、v0.4 钻石背收拢评审稿、v0.4a 菱形主翼评审图 + README 讲清**构型演进主线与被推翻原因** |
+
+### 🔧 修正
+
+- **悬空引用已消除**：`hardware/README.md` 与 `firmware/README.md` 正文引用的
+  `interface/pinmap.md`、`ardupilot/params/` 现在**真实存在**。
+- **可复现性**：文档数字与 3D 资产的生成脚本从工作区根目录移入 `tools/`，不再"只此一份在别处"。
+
+### ⚖️ 著作权与贡献归属（**按用户要求新增**）
+
+在 `NOTICE`、`LICENSE`、`CITATION.cff`、`README.md` 第 8 节统一声明：
+
+| 归属 | 内容 |
+|:---|:---|
+| **真人创作者（`baishanicedragon`）提出并迭代完善** | 设计**主体技术要求**；**构型设计**（v0.1→v0.4 取舍、推翻与收敛）；**任务剖面设计**（时间线、能量预算、段 I~IV 门控）；**红线要求**（安全边界、不可逾越约束如 `>20 m` 切断）；**开源框架选型**；**物料选择要求** |
+| **AI 协助完成** | **符合 GitHub 规范的文档撰写与整理**；**代码 Demo / 示例实现的设计** |
+
+> 著作权归真人创作者所有；AI 生成部分不构成独立著作权主张。
+
+### ⚠ 性质声明
+
+全部新增内容为**示例 / 参考实现**：未编译（本机无 gcc）、未 SITL、未实飞、未在真机跑通；
+引脚、器件封装、脚本端点、参数枚举值**均为示例值**，导入/投产前必须逐项核对官方最新文档。
+
+### 📄 受影响的文档
+
+`hardware/**` `firmware/**` `mission/**` `models/**` `tools/**` `assets/3d/archive/**`（新增）
+`README.md` `CHANGELOG.md` `NOTICE` `LICENSE` `CITATION.cff`
+
+---
+
+## [0.6.0] — 2026-09-10 · **软件实现示例代码（机载固件 + 安卓 APP）**
+
+> 触发原因：15-17 章只给框架不写代码，实际使用者缺少可参照的实现骨架。
+> 用户要求「以示例硬件写一版本样本代码，让实际使用者有参考（而不是直接跑）」。
+> 前置结论（已实测）：本地小模型（Ollama `qwen3:0.6b`，实测生成 14 tok/s）**不具备**生成可交付固件/APP 代码的能力——
+> 实测其编写三互锁函数时出现「声明无实现体」「把螺旋桨幻觉成 Sparrow」等错误。本版代码由人工口径逐节对齐 07/09/15/16/17 正典后编写。
+
+### ✅ 新增（示例代码 · 参考实现）
+
+| # | 内容 |
+|:--|:---|
+| A1 | `[docs/18]` 机载固件示例代码（C）：示例硬件假定表（STM32H743 飞控 / STM32N6 视觉 / ESP32-C6 WiFi / DPS310×2 / MS4525DO / INA226 …）、`hdrs_defs.h`、`fms.c` 顶层状态机、`comm_cut.c`（`>20 m` 切断，独立高优先级且不可屏蔽）、`checklist.c`（IL-1~IL-6）、`wifi_link.c` 帧编解码、`mission_rx.c`（`mission.bin` 解析，**强制忽略文件中的 `comm_cut_alt`**）、`deploy_ctrl` 段 II 门控（IL-5/IL-6，硬件互锁优先）、`detect.c`（ROI 匹配 + `MISSING` 告警）、`datalog.c`（双卡镜像 + 后备电写盘）、`recover.c`（断电 + 烟雾 + 双通道） |
+| A2 | `[docs/19]` 安卓 APP 示例代码（Kotlin）：权限清单、`SrcManager` 源注册表探测（HEAD 探测非爬虫）、`MissionCodec`（与 17.7 严格对称的编码）、`Pairing`（`WifiNetworkSpecifier` + 帧协议）、`ChecklistUi`、`FlightMon`（`ABORT` 在 alt ≥ 20 m 时置灰）、`RecoverUi`（标布**纯几何引导**，不做 AI）、`TfReader`（SAF 读 OTG 卡）、`Share`（系统 `ACTION_SEND`） |
+| A3 | **安全边界代码化**：20 m 切断由三重落实——① 机载强制用本地常量覆盖下发值；② APP 侧不提供任何调高入口且按钮置灰；③ 链路层 `link_rx_accept()` 在 RUN 态丢弃一切下行 |
+
+### ⚠ 性质声明
+
+18 / 19 是**示例代码，不是可交付固件 / APK**：未编译、未单元测试、未试飞、未在真机跑通；
+阈值、引脚、端点、句柄均为示例值，落地必须按 07 章实际 BOM 与 12 章验证流程**逐项替换、逐项实测**。
+
+### 📄 受影响的文档
+
+`docs/18` `docs/19`（新增） `README.md` `CHANGELOG.md`
+
+---
+
 ## [0.5.0] — 2026-09-09 · **软件系统框架（设计稿）**
 
 > 触发原因：硬件构型 v0.4 冻结后，用户要求补充**硬件之外的软件系统框架**——机载嵌入式固件 + 安卓 APP + 素材库。

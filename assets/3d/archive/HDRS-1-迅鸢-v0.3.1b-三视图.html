@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HDRS-1 迅鸢 v0.3.1b 三视图（尾翼改平 + 电池压舱）</title>
+<style>
+  body { font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+         margin: 0; padding: 24px; background: #fafafa; color: #222; }
+  h1 { margin: 0 0 4px 0; font-size: 20px; }
+  .sub { color: #666; font-size: 12px; margin-bottom: 16px; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 1280px; }
+  .card { background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 16px; }
+  .card h2 { margin: 0 0 8px 0; font-size: 15px; color: #c33; }
+  .meta { color: #666; font-size: 11px; margin-bottom: 8px; }
+  svg { width: 100%; height: auto; display: block; }
+  table { border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+  th, td { border: 1px solid #ccc; padding: 4px 8px; text-align: left; }
+  th { background: #f3f3f3; }
+  .warn { color: #c33; font-weight: bold; }
+  .ok   { color: #363; }
+</style>
+</head>
+<body>
+<h1>HDRS-1 迅鸢 v0.3.1b 三视图</h1>
+<div class="sub">按 2026-09-09 用户手绘 + 拍板（尾翼只做改平俯仰 / 电池作压舱物在重心） · 机头朝左 · 全长 1550 mm · MTOW 12.58 kg</div>
+
+<div class="grid">
+
+  <div class="card">
+    <h2>① 俯视图（按用户手绘）</h2>
+    <div class="meta">机翼剪刀式折叠；尾杆末端 4 桨 X 型 90° 等角；单片水平尾翼在其前方；电池压舱在 CG（STA 850）</div>
+    <svg viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="ax" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#666"/>
+        </marker>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#c33"/>
+        </marker>
+      </defs>
+      <g stroke="#eee" stroke-width="0.5">
+        <line x1="40" y1="40" x2="40" y2="640"/>
+        <line x1="100" y1="40" x2="100" y2="640"/>
+        <line x1="160" y1="40" x2="160" y2="640"/>
+        <line x1="220" y1="40" x2="220" y2="640"/>
+        <line x1="280" y1="40" x2="280" y2="640"/>
+        <line x1="340" y1="40" x2="340" y2="640"/>
+        <line x1="400" y1="40" x2="400" y2="640"/>
+        <line x1="460" y1="40" x2="460" y2="640"/>
+        <line x1="520" y1="40" x2="520" y2="640"/>
+        <line x1="580" y1="40" x2="580" y2="640"/>
+        <line x1="640" y1="40" x2="640" y2="640"/>
+      </g>
+      <line x1="40" y1="340" x2="1180" y2="340" stroke="#888" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#ax)"/>
+      <text x="1185" y="344" fill="#666">STA (mm)</text>
+
+      <g transform="translate(900, 600)">
+        <line x1="0" y1="0" x2="60" y2="0" stroke="#333" stroke-width="2"/>
+        <line x1="0" y1="-5" x2="0" y2="5" stroke="#333" stroke-width="2"/>
+        <line x1="60" y1="-5" x2="60" y2="5" stroke="#333" stroke-width="2"/>
+        <text x="30" y="20" text-anchor="middle" fill="#333" font-size="11">500 mm</text>
+      </g>
+
+      <!-- 轴 → 各站位刻度 -->
+      <g fill="#aaa" font-size="9">
+        <text x="106" y="333">B200</text>
+        <text x="166" y="333">D600</text>
+        <text x="236" y="333">E900</text>
+        <text x="296" y="333">F1100</text>
+        <text x="356" y="333">G1300</text>
+      </g>
+
+      <!-- A 区吸能机头 -->
+      <polygon points="40,330 40,350 100,180 100,160" fill="#fdd" stroke="#c33" stroke-width="1.5"/>
+      <text x="60" y="345" fill="#c33" font-size="11">A 吸能</text>
+      <rect x="100" y="320" width="60" height="40" fill="#fde" stroke="#a33" stroke-width="1"/>
+
+      <!-- D' 电池舱（压舱物）移到 STA 800-900，中心 850 -->
+      <rect x="226" y="305" width="30" height="70" fill="#ffd" stroke="#a80" stroke-width="1.5"/>
+      <text x="228" y="322" fill="#a80" font-size="9" font-weight="bold">电池</text>
+      <text x="228" y="362" fill="#a80" font-size="8">3.7kg</text>
+      <text x="228" y="372" fill="#a80" font-size="8">压舱</text>
+      <!-- CG 线移到 STA 850 附近（1px=3mm → 850mm = 之后 27px） -->
+      <line x1="323" y1="290" x2="323" y2="395" stroke="#c33" stroke-width="1.5" marker-end="url(#ar)" marker-start="url(#ar)"/>
+      <text x="325" y="282" fill="#c33" font-size="11" font-weight="bold">CG (STA 850 电池压舱)</text>
+
+      <!-- E 区主翼 -->
+      <ellipse cx="310" cy="340" rx="60" ry="30" fill="#cce" stroke="#224" stroke-width="1.5"/>
+      <text x="300" y="343" fill="#224" font-size="11" font-weight="bold">E 主翼(展开)</text>
+      <text x="295" y="378" fill="#224" font-size="10">展长 2.0 m · AR 6.35</text>
+      <rect x="270" y="328" width="80" height="24" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="2,2"/>
+      <text x="278" y="304" fill="#888" font-size="9" font-style="italic">（折叠态：翼贴机背）</text>
+
+      <rect x="370" y="325" width="72" height="30" fill="#ddd" stroke="#444" stroke-width="1"/>
+      <text x="385" y="345" fill="#444" font-size="10">F 机身</text>
+
+      <!-- G 电机座 + 尾段 -->
+      <rect x="442" y="320" width="42" height="40" fill="#fed" stroke="#a40" stroke-width="1.2"/>
+      <text x="448" y="345" fill="#a40" font-size="10">G 电机座</text>
+
+      <!-- 尾翼段：单片水平尾翼在桨盘前方 STA ~1430-1490 -->
+      <rect x="484" y="315" width="22" height="50" fill="#dec" stroke="#362" stroke-width="1.2"/>
+      <text x="486" y="332" fill="#362" font-size="8" font-weight="bold">尾翼</text>
+      <text x="486" y="350" fill="#362" font-size="8">STA</text>
+      <text x="486" y="360" fill="#362" font-size="8">1430</text>
+      <text x="486" y="370" fill="#362" font-size="8">~90</text>
+
+      <!-- 桨盘段 STA1500-1550 -->
+      <rect x="506" y="315" width="20" height="50" fill="#a40" stroke="#600" stroke-width="1.2"/>
+      <text x="508" y="332" fill="#fff" font-size="8" font-weight="bold">桨盘</text>
+      <text x="508" y="350" fill="#fff" font-size="8">STA</text>
+      <text x="508" y="360" fill="#fff" font-size="8">1500</text>
+      <text x="508" y="370" fill="#fff" font-size="8">~50</text>
+
+      <!-- 桨毂 X 型支架中心在尾杆末端（STA1550=512px）-->
+      <g stroke="#a40" stroke-width="2" fill="none">
+        <line x1="526" y1="340" x2="526" y2="265"/>
+        <line x1="526" y1="340" x2="601" y2="340"/>
+        <line x1="526" y1="340" x2="526" y2="415"/>
+        <line x1="526" y1="340" x2="451" y2="340"/>
+      </g>
+      <g stroke="#a40" stroke-width="1.2" fill="#fed">
+        <circle cx="526" cy="265" r="6"/><text x="530" y="259" font-size="9" fill="#a40">桨2</text>
+        <circle cx="601" cy="340" r="6"/><text x="605" y="334" font-size="9" fill="#a40">桨1</text>
+        <circle cx="526" cy="415" r="6"/><text x="530" y="429" font-size="9" fill="#a40">桨4</text>
+        <circle cx="451" cy="340" r="6"/><text x="414" y="334" font-size="9" fill="#a40">桨3</text>
+      </g>
+
+      <!-- 桨叶 X 投影（左右 2 桨清晰，上下 2 桨与尾杆重叠） -->
+      <g stroke="#444" stroke-width="1.2">
+        <line x1="421" y1="320" x2="481" y2="360"/>
+        <line x1="421" y1="360" x2="481" y2="320"/>
+        <line x1="571" y1="320" x2="631" y2="360"/>
+        <line x1="571" y1="360" x2="631" y2="320"/>
+        <line x1="506" y1="280" x2="546" y2="300"/>
+        <line x1="506" y1="300" x2="546" y2="280"/>
+        <line x1="506" y1="380" x2="546" y2="400"/>
+        <line x1="506" y1="400" x2="546" y2="380"/>
+      </g>
+      <g stroke="#a40" stroke-width="0.8" fill="none" stroke-dasharray="2,2">
+        <circle cx="601" cy="340" r="49.5"/>
+        <circle cx="451" cy="340" r="49.5"/>
+        <circle cx="526" cy="265" r="49.5"/>
+        <circle cx="526" cy="415" r="49.5"/>
+      </g>
+
+      <!-- 单片水平尾翼（梯形）→ 桨盘前方投影（俯视看为水平线 + 弦宽） -->
+      <polygon points="500,332 530,332 530,348 500,348" fill="#dec" stroke="#362" stroke-width="1.2"/>
+      <text x="410" y="278" fill="#362" font-size="9">单片水平尾翼（只做俯仰/改平，升降舵全展）</text>
+
+      <g font-size="11" fill="#222">
+        <text x="620" y="200" font-weight="bold" fill="#c33">v0.3.1b 尾段（按用户拍板）</text>
+        <text x="620" y="220">▸ 4 桨 X 型 90° 等角分布，桨心 R = 0.245 m（STA1550 最末端）</text>
+        <text x="620" y="236">▸ 俯视图只见左右 2 桨（上下 2 桨与尾杆重叠）</text>
+        <text x="620" y="252">▸ 单片水平尾翼在桨盘前（STA1430-1490），只做改平俯仰</text>
+        <text x="620" y="268">▸ 偏航 / 横滚 → 全部 4 桨差动推力（无垂直尾翼）</text>
+        <text x="620" y="284">▸ 电池 = 压舱物 @ STA 850 → CG = 920 mm · SM = +6.2%</text>
+        <text x="620" y="300">▸ 桨盘 STA 1550 / 尾翼 STA 1430-1490 / 轴向错开 ≥ 60 mm</text>
+      </g>
+
+      <g transform="translate(40, 80)" font-size="10" fill="#222">
+        <rect x="0" y="0" width="280" height="180" fill="#f8f8f8" stroke="#999" stroke-width="1"/>
+        <text x="10" y="15" font-weight="bold" fill="#c33">v0.3.1b 站位表</text>
+        <text x="10" y="32">0–200  A 区：吸能机头 + 触地环端</text>
+        <text x="10" y="46">200–600  B/C 区：二级吸能筒 + 航电前舱</text>
+        <text x="10" y="60">600–800  D 区：载荷舱（相机/数据）</text>
+        <text x="10" y="74">800–900  D' 电池舱（压舱物，中心 850）</text>
+        <text x="10" y="88">820–1010  E 区：主翼 AC=900，MAC=315</text>
+        <text x="10" y="102">1010–1250  F 区：航电后舱</text>
+        <text x="10" y="116">1250–1400  G 区：电机座/电调段</text>
+        <text x="10" y="130">1400–1500  尾翼段：单片水平尾翼(1430-1490)</text>
+        <text x="10" y="144">1500–1550  桨盘段（最末端，X 环布 STA1550）</text>
+        <text x="10" y="162" font-weight="bold" fill="#c33">全长 1.55 m · MTOW 12.58 kg</text>
+        <text x="10" y="176" fill="#888">CG = STA 920（SM +6.2%）电池决定</text>
+      </g>
+
+      <text x="600" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">HDRS-1 迅鸢 v0.3.1b 俯视图</text>
+    </svg>
+  </div>
+
+  <div class="card">
+    <h2>② 侧视图</h2>
+    <div class="meta">机头朝左（A 区），桨盘最右（STA1550）；电池压舱在 STA850（CG 前方 ~70mm，靠电池质量重心拉 CG 到 920）</div>
+    <svg viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="ax2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#666"/>
+        </marker>
+      </defs>
+      <g stroke="#eee" stroke-width="0.5">
+        <line x1="40" y1="40" x2="40" y2="380"/>
+        <line x1="100" y1="40" x2="100" y2="380"/>
+        <line x1="160" y1="40" x2="160" y2="380"/>
+        <line x1="220" y1="40" x2="220" y2="380"/>
+        <line x1="280" y1="40" x2="280" y2="380"/>
+        <line x1="340" y1="40" x2="340" y2="380"/>
+        <line x1="400" y1="40" x2="400" y2="380"/>
+        <line x1="460" y1="40" x2="460" y2="380"/>
+        <line x1="520" y1="40" x2="520" y2="380"/>
+        <line x1="580" y1="40" x2="580" y2="380"/>
+      </g>
+      <line x1="40" y1="200" x2="1180" y2="200" stroke="#888" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#ax2)"/>
+      <text x="1185" y="204" fill="#666">STA (mm)</text>
+
+      <g transform="translate(900, 350)">
+        <line x1="0" y1="0" x2="60" y2="0" stroke="#333" stroke-width="2"/>
+        <line x1="0" y1="-5" x2="0" y2="5" stroke="#333" stroke-width="2"/>
+        <line x1="60" y1="-5" x2="60" y2="5" stroke="#333" stroke-width="2"/>
+        <text x="30" y="20" text-anchor="middle" fill="#333" font-size="11">500 mm</text>
+      </g>
+
+      <path d="M40,200 L100,160 L100,240 Z" fill="#fdd" stroke="#c33" stroke-width="1.5"/>
+      <text x="55" y="205" fill="#c33" font-size="10">A 吸能</text>
+
+      <rect x="100" y="190" width="320" height="20" fill="#ddd" stroke="#444" stroke-width="1"/>
+      <rect x="100" y="190" width="60" height="20" fill="#fde" stroke="#a33" stroke-width="0.8"/>
+      <rect x="160" y="180" width="40" height="40" fill="#cde" stroke="#367" stroke-width="1"/>
+      <text x="166" y="206" fill="#367" font-size="10">载荷舱</text>
+
+      <!-- 电池压舱 STA 800-900 -->
+      <rect x="226" y="175" width="30" height="50" fill="#ffd" stroke="#a80" stroke-width="1.5"/>
+      <text x="229" y="206" fill="#a80" font-size="9" font-weight="bold">电池</text>
+      <text x="229" y="218" fill="#a80" font-size="8">压舱</text>
+
+      <!-- CG 线（整机 CG 920，不在电池中心 850，因其它部件质心靠后 952） -->
+      <line x1="316" y1="160" x2="316" y2="245" stroke="#c33" stroke-width="1.5"/>
+      <text x="270" y="155" fill="#c33" font-size="11" font-weight="bold">CG (STA 920)</text>
+
+      <rect x="280" y="180" width="40" height="40" fill="#cce" stroke="#224" stroke-width="1"/>
+      <text x="285" y="206" fill="#224" font-size="10">E 主翼</text>
+      <rect x="320" y="190" width="72" height="20" fill="#ddd" stroke="#444" stroke-width="0.8"/>
+      <rect x="392" y="180" width="42" height="40" fill="#fed" stroke="#a40" stroke-width="1"/>
+      <text x="398" y="206" fill="#a40" font-size="10">G 电机</text>
+      <rect x="434" y="190" width="60" height="20" fill="#dec" stroke="#362" stroke-width="1"/>
+      <text x="440" y="206" fill="#362" font-size="10">尾翼段</text>
+      <rect x="494" y="185" width="26" height="30" fill="#a40" stroke="#600"/>
+      <text x="497" y="225" fill="#a40" font-size="10">桨盘</text>
+
+      <g font-size="10" fill="#222">
+        <text x="40" y="395" font-weight="bold">v0.3.1b 关键尺寸</text>
+        <text x="200" y="395">• 全长 1550 mm</text>
+        <text x="350" y="395">• 桨盘 STA 1550</text>
+        <text x="500" y="395">• CG STA 920 (SM +6.2%)</text>
+        <text x="700" y="395">• 摆频 0.63 Hz</text>
+      </g>
+
+      <text x="600" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">HDRS-1 迅鸢 v0.3.1b 侧视图</text>
+    </svg>
+  </div>
+
+  <div class="card">
+    <h2>③ 后视图（从尾桨方向看）</h2>
+    <div class="meta">4 桨桨心 X 型 90° 等角；无垂直尾翼；机身中央截面 ⌀140</div>
+    <svg viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="ax3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#666"/>
+        </marker>
+      </defs>
+      <line x1="350" y1="20" x2="350" y2="480" stroke="#888" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#ax3)"/>
+      <line x1="20" y1="250" x2="680" y2="250" stroke="#888" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#ax3)"/>
+      <text x="345" y="15" fill="#666">上</text>
+      <text x="685" y="255" fill="#666">右</text>
+
+      <g transform="translate(580, 460)">
+        <line x1="0" y1="0" x2="60" y2="0" stroke="#333" stroke-width="2"/>
+        <text x="30" y="20" text-anchor="middle" fill="#333" font-size="11">100 mm</text>
+      </g>
+
+      <circle cx="350" cy="250" r="42" fill="#ddd" stroke="#444" stroke-width="1.5"/>
+      <text x="350" y="254" text-anchor="middle" fill="#444" font-size="11">机身 ⌀140</text>
+
+      <g stroke="#a40" stroke-width="2" fill="none">
+        <line x1="350" y1="250" x2="350" y2="103"/>
+        <line x1="350" y1="250" x2="497" y2="250"/>
+        <line x1="350" y1="250" x2="350" y2="397"/>
+        <line x1="350" y1="250" x2="203" y2="250"/>
+      </g>
+      <g stroke="#a40" stroke-width="1.5" fill="#fed">
+        <circle cx="350" cy="103" r="8"/><text x="380" y="105" font-size="11" fill="#a40">桨2 (上)</text>
+        <circle cx="497" cy="250" r="8"/><text x="497" y="290" font-size="11" fill="#a40" text-anchor="middle">桨1 (右)</text>
+        <circle cx="350" cy="397" r="8"/><text x="380" y="400" font-size="11" fill="#a40">桨4 (下)</text>
+        <circle cx="203" cy="250" r="8"/><text x="203" y="290" font-size="11" fill="#a40" text-anchor="middle">桨3 (左)</text>
+      </g>
+
+      <g stroke="#a40" stroke-width="0.8" fill="none" stroke-dasharray="2,2">
+        <circle cx="350" cy="103" r="99"/>
+        <circle cx="497" cy="250" r="99"/>
+        <circle cx="350" cy="397" r="99"/>
+        <circle cx="203" cy="250" r="99"/>
+      </g>
+
+      <g stroke="#444" stroke-width="1.2">
+        <line x1="320" y1="80" x2="380" y2="125"/><line x1="320" y1="125" x2="380" y2="80"/>
+        <line x1="525" y1="220" x2="470" y2="280"/><line x1="525" y1="280" x2="470" y2="220"/>
+        <line x1="320" y1="375" x2="380" y2="420"/><line x1="320" y1="420" x2="380" y2="375"/>
+        <line x1="175" y1="220" x2="230" y2="280"/><line x1="175" y1="280" x2="230" y2="220"/>
+      </g>
+
+      <!-- 无垂直尾翼说明 -->
+      <g font-size="11" fill="#222">
+        <text x="40" y="40" font-weight="bold" fill="#c33">v0.3.1b 后视图</text>
+        <text x="40" y="58">▸ 4 桨 X 型 90° 等角分布（桨心 R=245 mm）</text>
+        <text x="40" y="74">▸ 无垂直尾翼 —— 偏航/横滚全由 4 桨差动推力控制</text>
+        <text x="40" y="90">▸ 相邻反向对转自消反扭矩（桨1 CW/桨2 CCW/桨3 CW/桨4 CCW）</text>
+        <text x="40" y="108">▸ 单片水平尾翼投影为水平短线（在桨盘前 60 mm，不在此截面）</text>
+        <text x="40" y="126" class="ok">✅ 倒拖/垂直段姿态：推力线过 CG，摆式被动稳定</text>
+        <text x="40" y="142" class="ok">✅ 平飞段：机翼滚转 + 尾翼俯仰 + 差动推力偏航</text>
+      </g>
+
+      <text x="350" y="495" text-anchor="middle" font-size="14" fill="#666">HDRS-1 迅鸢 v0.3.1b 后视图 · 1 px ≈ 1.67 mm</text>
+    </svg>
+  </div>
+
+  <div class="card">
+    <h2>④ v0.3 → v0.3.1b 参数表</h2>
+    <table>
+      <tr><th>项</th><th>v0.3（旧）</th><th>v0.3.1b（新）</th></tr>
+      <tr><td>尾翼</td><td>4 片 X 型（错）</td><td class="ok">单片水平梯形尾翼（只做俯仰/改平）</td></tr>
+      <tr><td>偏航/横滚</td><td>（X 尾翼承担）</td><td class="ok">4 桨差动推力（无垂尾/无方向舵）</td></tr>
+      <tr><td>尾翼位置</td><td>STA 1440-1524</td><td class="ok">STA 1430-1490（桨盘前方，错开 ≥60 mm）</td></tr>
+      <tr><td>4 桨分布</td><td>"X 型 90° 环布"（模糊）</td><td class="ok">尾杆末端 X 型 90° 等角（桨心 R 0.245 m）</td></tr>
+      <tr><td>桨盘 STA</td><td>1450</td><td class="ok">1550（最末端）</td></tr>
+      <tr><td>电池</td><td>STA 600 + 滑轨 600-820</td><td class="ok">STA 800-900（中心 850），<b>压舱物，决定 CG</b></td></tr>
+      <tr><td>CG (mm)</td><td>885（计算不自洽）</td><td class="ok">920（SM +6.2%）</td></tr>
+      <tr><td>倒拖摆 f (Hz)</td><td>0.5（旧"1.0 m 摆长"）</td><td class="ok">0.63（CG→桨盘 630 mm）</td></tr>
+      <tr><td>总质量 (kg)</td><td>12.19</td><td class="ok">12.58</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>⑤ 仍需你拍板的疑点（收窄到 2 个）</h2>
+    <ol>
+      <li><span class="warn">尾翼尺寸</span>：单片水平尾翼面积需满足改平力矩。我暂定弦 60mm × 展 ~800mm（面积 ~0.048 m²）。<b>你手绘尾翼看起来比 800mm 窄，确认下</b>——太小力矩不够，太大折叠后超运输包络。</li>
+      <li><span class="warn">电机座/桨毂外伸结构</span>：桨心距机身轴线 245mm = 4 根悬臂从尾杆径向伸出 245mm。X4 参考图里桨臂在机架四角，我们的臂从细尾杆伸出——<b>确认悬臂根数/形式</b>（4 独立短臂 or 2 根贯穿横梁 + 端部电机？）</li>
+      <li class="ok">（已收敛）尾翼只做俯仰 ✓ / 电池压舱 @STA850 → CG920 ✓ / 无垂尾 ✓</li>
+    </ol>
+  </div>
+
+</div>
+</body>
+</html>

@@ -9,9 +9,13 @@ abstract: >-
   高分辨率影像，并以泡沫机头溃缩吸能方式在预设软质回收场受控迫降、整机回收数据。
   全部参数未经风洞与实飞验证，属个人学习产物。
 authors:
-  - name: "本仓库贡献者"
+  # 真人创作者：设计主体（主体技术要求 / 构型设计 / 任务剖面设计 / 红线要求 /
+  #               开源框架选型 / 物料选择要求）均由其提出并迭代完善。
+  # AI 协助完成：符合 GitHub 规范的文档撰写与整理，以及代码 Demo / 示例实现的设计。
+  - name: "baishanicedragon（真人创作者 · GitHub 账号；如需署名真名请自行替换）"
+    website: "https://github.com/baishanicedragon"
 type: "dataset"
-version: "0.4.0"
+version: "0.6.0"
 date-released: "2026-09-09"
 license: "MIT"
 repository-code: "https://github.com/baishanicedragon/disaster-recon-drone"
@@ -39,6 +43,9 @@ preferred-citation:
   year: 2026
   url: "https://github.com/baishanicedragon/disaster-recon-drone"
   authors:
-    - name: "本仓库贡献者"
+    - name: "baishanicedragon（真人创作者；AI 协助文档撰写与代码 Demo 设计）"
   note: >-
     AI 辅助设计 / 个人学习产物。所有参数未经实飞验证，不构成任何工程交付依据。
+    著作权与贡献归属：设计主体（主体技术要求、构型设计、任务剖面设计、红线要求、
+    开源框架选型、物料选择要求）由真人创作者提出并迭代完善；
+    AI 协助完成符合 GitHub 规范的文档撰写与代码 Demo / 示例实现的设计。

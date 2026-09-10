@@ -1,6 +1,19 @@
 MIT License
 
-Copyright (c) 2026 HDRS-1「迅鸢」文档项目贡献者
+Copyright (c) 2026 baishanicedragon —— HDRS-1「迅鸢」设计主体作者（真人创作者）
+
+【著作权与贡献归属 / Attribution】
+本仓库的设计主体由真人创作者提出并迭代完善，包括：
+  · 设计主体技术要求
+  · 构型设计（含 v0.1 → v0.4 各版构型的取舍、推翻与收敛）
+  · 任务剖面设计（时间线、能量预算、段 I~IV 划分与门控）
+  · 红线要求（安全边界、不可逾越的约束，如 >20 m 通讯切断）
+  · 开源框架选型（ArduPilot / MAVLink / OpenDroneMap / QGIS 等）
+  · 物料选择要求（器件等级、BOM 约束、替代件口径）
+AI 协助完成的部分为：
+  · 符合 GitHub 规范的文档撰写与整理
+  · 代码 Demo / 示例实现的设计（docs/18、docs/19 及各目录示例文件）
+本仓库著作权归真人创作者所有。
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

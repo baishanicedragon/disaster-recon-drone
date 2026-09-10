@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HDRS-1 迅鸢 v0.4 双翼快拆 · 任务剖面参考动画</title>
+<style>
+  :root{
+    --bg:#0b0f14; --panel:rgba(16,22,30,.88); --line:#243040;
+    --txt:#d7dee8; --dim:#8494a8; --acc:#39d0d8; --warn:#e8952f; --red:#d64545;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:var(--bg);color:var(--txt);
+    font-family:ui-monospace,"Cascadia Mono",Consolas,"Microsoft YaHei",monospace;
+    overflow:hidden;-webkit-font-smoothing:antialiased}
+  #view{position:fixed;inset:0}
+  #ui{position:fixed;inset:0;pointer-events:none}
+  #ui.hide{opacity:0}
+  .card{position:absolute;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;backdrop-filter:blur(8px);pointer-events:auto}
+
+  /* 左上 阶段卡 */
+  #phase{left:16px;top:16px;width:340px;padding:12px 14px}
+  #phase .badge{display:inline-block;padding:2px 8px;border-radius:5px;
+    font-size:11px;font-weight:700;color:#0b0f14;letter-spacing:.5px}
+  #phase h2{font-size:17px;margin:8px 0 6px;letter-spacing:.3px}
+  #phase p{font-size:11.5px;line-height:1.65;color:var(--dim)}
+
+  /* 右上 遥测 */
+  #tele{right:16px;top:16px;width:210px;padding:10px 12px;font-size:12px}
+  #tele .row{display:flex;justify-content:space-between;padding:3px 0;
+    border-bottom:1px dashed rgba(255,255,255,.06)}
+  #tele .row:last-child{border:0}
+  #tele .k{color:var(--dim)}
+  #tele .v{font-weight:700;font-variant-numeric:tabular-nums}
+  .on{color:#4caf7d}.off{color:#6b7280}
+
+  /* 底部 时间轴 */
+  #time{left:16px;right:16px;bottom:16px;padding:10px 14px}
+  #bar{position:relative;height:26px;border-radius:5px;overflow:hidden;
+    background:#0f151d;border:1px solid var(--line);cursor:pointer;margin-bottom:8px}
+  #bar .seg{position:absolute;top:0;bottom:0;opacity:.42;
+    border-right:1px solid rgba(0,0,0,.5)}
+  #bar .seg span{position:absolute;left:4px;top:5px;font-size:10px;
+    color:#0b0f14;font-weight:700}
+  #bar .fill{position:absolute;top:0;bottom:0;left:0;background:rgba(255,255,255,.10)}
+  #cur{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--acc);
+    box-shadow:0 0 8px var(--acc)}
+  #ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  button{background:#1a2431;color:var(--txt);border:1px solid var(--line);
+    border-radius:6px;padding:5px 11px;font:inherit;font-size:12px;cursor:pointer}
+  button:hover{background:#243040;border-color:#3a4a60}
+  button.on{background:#123c42;border-color:var(--acc);color:var(--acc)}
+  #tval{margin-left:auto;font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums}
+
+  /* 右下 视角 + 图例 */
+  #side{right:16px;bottom:96px;width:210px;padding:10px 12px}
+  #side .ttl{font-size:10.5px;color:var(--dim);margin-bottom:7px;letter-spacing:1px}
+  #side .btns{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}
+  #side .btns button{padding:4px 8px;font-size:11px}
+  .lg{display:flex;align-items:center;gap:7px;font-size:10.5px;padding:1.5px 0;color:var(--dim)}
+  .sw{width:11px;height:11px;border-radius:2px;flex:0 0 auto}
+  #hint{position:absolute;left:16px;bottom:96px;font-size:10.5px;color:#5d6b7e;
+    line-height:1.7;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="view"></div>
+
+<div id="ui">
+  <div class="card" id="phase">
+    <span class="badge" id="p-badge">P0</span>
+    <h2 id="p-name">—</h2>
+    <p id="p-desc">—</p>
+  </div>
+
+  <div class="card" id="tele">
+    <div class="row"><span class="k">任务时间</span><span class="v" id="t-t">0.0 s</span></div>
+    <div class="row"><span class="k">高度 AGL</span><span class="v" id="t-h">0 m</span></div>
+    <div class="row"><span class="k">空速</span><span class="v" id="t-v">0.0 m/s</span></div>
+    <div class="row"><span class="k">俯仰</span><span class="v" id="t-p">+90°</span></div>
+    <div class="row"><span class="k">螺旋桨</span><span class="v off" id="t-prop">停转</span></div>
+    <div class="row"><span class="k">变距档</span><span class="v off" id="t-pitch">顺桨</span></div>
+    <div class="row"><span class="k">主翼</span><span class="v" id="t-wing">收拢</span></div>
+    <div class="row"><span class="k">升降舵</span><span class="v" id="t-el">0°</span></div>
+  </div>
+
+  <div class="card" id="side">
+    <div class="ttl">视角</div>
+    <div class="btns">
+      <button id="b-follow" class="on">跟随</button>
+      <button id="b-wide">全景</button>
+      <button id="b-orbit">环绕</button>
+    </div>
+    <div class="ttl">部件</div>
+    <div class="lg"><i class="sw" style="background:#d64545"></i>机头泡沫（可拆·吸能）</div>
+    <div class="lg"><i class="sw" style="background:#8a93a0"></i>主体（电池/航电/翼盒）</div>
+    <div class="lg"><i class="sw" style="background:#4a78d8"></i>上翼 2 片 b1.5</div>
+    <div class="lg"><i class="sw" style="background:#9b5fd0"></i>下翼 2 片 b1.4</div>
+    <div class="lg"><i class="sw" style="background:#e8952f"></i>4×13″ 桨（X 型 90°）</div>
+    <div class="lg"><i class="sw" style="background:#4caf7d"></i>全动平尾</div>
+    <div class="lg"><i class="sw" style="background:#39d0d8"></i>垂尾</div>
+  </div>
+
+  <div id="hint">
+    拖拽旋转 · 滚轮缩放 · 空格播放/暂停 · H 隐藏界面 · ←/→ 单帧
+  </div>
+
+  <div class="card" id="time">
+    <div id="bar"><div class="fill" id="fill"></div><div id="cur"></div></div>
+    <div id="ctl">
+      <button id="b-play">▶ 播放</button>
+      <button id="b-rew">⏮ 复位</button>
+      <button class="spd" data-s="0.5">0.5×</button>
+      <button class="spd on" data-s="1">1×</button>
+      <button class="spd" data-s="2">2×</button>
+      <button id="b-loop" class="on">循环</button>
+      <span id="tval">0.0 / 72.0 s</span>
+    </div>
+  </div>
+</div>
+
+<script id="partData" type="text/plain">/*__PARTS__*/</script>
+<script id="threeLib" type="text/plain">/*__THREE__*/</script>
+<script type="module">
+// ---------- 载入 three（blob 动态 import，全离线） ----------
+const threeSrc = document.getElementById('threeLib').textContent;
+const THREE = await import(URL.createObjectURL(new Blob([threeSrc], {type:'text/javascript'})));
+const PART_DATA = new Function(
+  document.getElementById('partData').textContent + '; return PART_DATA;')();
+
+// ================= 任务剖面定义 =================
+const T_END = 72.0;
+
+const PHASES = [
+  {id:'P0', t0:0,  t1:5,  c:'#7a8699', n:'待发 · 机头插软地',
+   d:'双翼收拢挂体、尾组已装。机头泡沫端插入软地，手机 WiFi 配对后一键起飞。'},
+  {id:'P1', t0:5,  t1:27, c:'#e8952f', n:'倒拖爬升 0 → 150 m',
+   d:'4×13″ 桨大距档整机倒拖上升，机头始终朝下。翼收拢不吃下洗流，悬停约 1.7 kW。'},
+  {id:'P2', t0:27, t1:29, c:'#d64545', n:'关机 · 顺桨',
+   d:'到达 150 m 关断电机，桨顺桨折叠，转为无动力。'},
+  {id:'P3', t0:29, t1:35, c:'#9b5fd0', n:'无动力俯冲（机头朝下）',
+   d:'重力增速头朝下坠。翼仍收拢、阻力最小，空速冲到 1.25 Vs。'},
+  {id:'P4', t0:35, t1:37, c:'#39d0d8', n:'雨伞撑开 · 双翼展开',
+   d:'动压触发弹簧，8 段翼一次性撑开并棘爪自锁——俯冲段一次到位，无舵机无电缆。'},
+  {id:'P5', t0:37, t1:42, c:'#4caf7d', n:'2.0 g 拉平',
+   d:'全动平尾偏转，把机体从 -90° 拉到水平。掉高约 56 m，净高约 60 m。'},
+  {id:'P6', t0:42, t1:50, c:'#4a78d8', n:'变距切巡航档 · 重启推进',
+   d:'棘轮单向切小距，重启尾桨进入水平推进，爬回 70 m 巡航高度。'},
+  {id:'P7', t0:50, t1:63, c:'#5b8def', n:'巡航侦察',
+   d:'28 m/s 平飞，双翼 S=0.63 m²（上 1.5 + 下 1.4），航电与载荷作业。'},
+  {id:'P8', t0:63, t1:72, c:'#c94f4f', n:'末端迫降（吸能头触地）',
+   d:'无跑道回收：机头泡沫段溃缩吸能，保护数据舱。吸能头一次性、可更换。'}
+];
+
+// 关键帧：y=机头世界高度(m)  x=机头世界X(m, 前进为负)  rz=俯仰(deg, 90=机头朝下, 0=水平)
+//         fold=1收拢/0展开  spin=桨转  thr=推力  el=升降舵(deg)
+const KF = [
+  {t:0,    y:0,   x:0,     rz:90, fold:1, spin:0, thr:0, el:0},
+  {t:5,    y:0,   x:0,     rz:90, fold:1, spin:0, thr:0, el:0,  e:'lin'},
+  {t:7,    y:3,   x:0,     rz:90, fold:1, spin:1, thr:1, el:0,  e:'lin'},
+  {t:27,    y:150, x:0,     rz:90, fold:1, spin:1, thr:1, el:0,  e:'lin'},
+  {t:27.5,  y:150, x:0,     rz:90, fold:1, spin:0, thr:0, el:0,  e:'lin'},
+  {t:29,    y:148, x:0,     rz:90, fold:1, spin:0, thr:0, el:0,  e:'acc'},
+  {t:35,    y:122, x:0,     rz:90, fold:1, spin:0, thr:0, el:0,  e:'lin'},
+  {t:37,    y:116, x:0,     rz:90, fold:0, spin:0, thr:0, el:0,  e:'lin'},
+  {t:39.5,  y:98,  x:-22,   rz:45, fold:0, spin:0, thr:0, el:25, e:'smooth'},
+  {t:42,   y:60,  x:-95,   rz:0,  fold:0, spin:0, thr:0, el:25, e:'lin'},
+  {t:44,   y:62,  x:-140,  rz:0,  fold:0, spin:1, thr:1, el:8,  e:'lin'},
+  {t:50,   y:70,  x:-340,  rz:0,  fold:0, spin:1, thr:1, el:0,  e:'lin'},
+  {t:63,   y:70,  x:-830,  rz:0,  fold:0, spin:1, thr:1, el:0,  e:'lin'},
+  {t:68,   y:28,  x:-960,  rz:-7, fold:0, spin:0, thr:0, el:12, e:'lin'},
+  {t:72,   y:0,   x:-1045, rz:-12,fold:0, spin:0, thr:0, el:15, e:'lin'}
+];
+
+const easeF = {
+  lin:   u => u,
+  smooth:u => u*u*(3-2*u),
+  acc:   u => u*u
+};
+function sample(t){
+  t = Math.max(0, Math.min(T_END, t));
+  let i = 0;
+  while(i < KF.length-2 && t > KF[i+1].t) i++;
+  const a = KF[i], b = KF[i+1];
+  const u = (b.t - a.t) ? (t - a.t)/(b.t - a.t) : 0;
+  const e = easeF[a.e || 'lin'](u);
+  const L = (k) => a[k] + (b[k]-a[k])*e;
+  return {y:L('y'), x:L('x'), rz:L('rz'), fold:L('fold'),
+          spin:L('spin'), thr:L('thr'), el:L('el')};
+}
+function phaseAt(t){
+  for(const p of PHASES) if(t >= p.t0 && t < p.t1) return p;
+  return PHASES[PHASES.length-1];
+}
+
+// ================= 场景 =================
+const host = document.getElementById('view');
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+host.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0b0f14);
+scene.fog = new THREE.Fog(0x0b0f14, 300, 1600);
+const camera = new THREE.PerspectiveCamera(42, 1, 0.05, 8000);
+
+scene.add(new THREE.HemisphereLight(0xdfe9ff, 0x243040, 0.62));
+const sun = new THREE.DirectionalLight(0xffffff, 1.3);
+sun.position.set(-400, 700, 500); scene.add(sun);
+const fill = new THREE.DirectionalLight(0x7fb4ff, 0.32);
+fill.position.set(400, 200, -500); scene.add(fill);
+
+// 地面（世界单位 = 米；X 为航迹，机头前进方向 -X）
+const ground = new THREE.GridHelper(2400, 60, 0x2a3c52, 0x1a222c);
+ground.position.set(-500, 0, 0);
+scene.add(ground);
+const gp = new THREE.Mesh(new THREE.PlaneGeometry(2400, 2400),
+  new THREE.MeshStandardMaterial({color:0x11171f, roughness:1}));
+gp.rotation.x = -Math.PI/2; gp.position.set(-500, -0.02, 0); scene.add(gp);
+
+// 起飞触地环 / 迫降点标记
+function marker(x, color, r){
+  const m = new THREE.Mesh(new THREE.RingGeometry(r*0.8, r, 48),
+    new THREE.MeshBasicMaterial({color, side:THREE.DoubleSide, transparent:true, opacity:.75}));
+  m.rotation.x = -Math.PI/2; m.position.set(x, 0.03, 0); scene.add(m);
+}
+marker(0, 0x39d0d8, 0.55);
+marker(-1045, 0xd64545, 1.6);
+
+// 高度标尺（每 50 m 一个刻度环，仅示意）
+for(let h=50; h<=200; h+=50){
+  const g = new THREE.Mesh(new THREE.RingGeometry(24.7, 25, 72),
+    new THREE.MeshBasicMaterial({color:0x2a3c52, side:THREE.DoubleSide,
+      transparent:true, opacity:.35}));
+  g.rotation.x = -Math.PI/2; g.position.set(-500, h, 0); scene.add(g);
+}
+
+// ================= 飞行器 =================
+const MATDEF = {
+  nose:  0xd64545, hull:  0x8a93a0, arm:   0x4a515c,
+  motor: 0x6b7280, prop:  0xe8952f, tailh: 0x4caf7d,
+  tailv: 0x39d0d8, wing_u:0x4a78d8, wing_l:0x9b5fd0
+};
+function parseObj(txt){
+  const V=[], F=[];
+  for(const line of txt.split('\n')){
+    const s = line.trim(); if(!s) continue;
+    if(s[0]==='v'){ const p=s.split(/\s+/); V.push(+p[1],+p[2],+p[3]); }
+    else if(s[0]==='f'){ const p=s.split(/\s+/); F.push(+p[1]-1,+p[2]-1,+p[3]-1); }
+  }
+  const pos = new Float32Array(F.length*3);
+  for(let i=0;i<F.length;i++){
+    pos[i*3]   = V[F[i]*3];
+    pos[i*3+1] = V[F[i]*3+1];
+    pos[i*3+2] = V[F[i]*3+2];
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.computeVertexNormals();
+  return g;
+}
+const matCache = {};
+function matOf(key){
+  if(!matCache[key]) matCache[key] = new THREE.MeshStandardMaterial({
+    color: MATDEF[key], roughness:.68, metalness:.12,
+    side: THREE.DoubleSide, flatShading:true});
+  return matCache[key];
+}
+
+const craft = new THREE.Group();
+craft.scale.setScalar(0.001);      // 模型 mm → 世界 m
+scene.add(craft);
+
+const N = {};                       // 部件 group 索引
+const ORDER = ["nose","hull","arm","motor","tailv","elevator",
+               "prop_0","prop_1","prop_2","prop_3",
+               "wing_U_R_i","wing_U_L_i","wing_L_R_i","wing_L_L_i"];
+for(const name of ORDER){
+  const d = PART_DATA[name];
+  const [px,py,pz] = d.pivot;
+  const grp = new THREE.Group();
+  grp.position.set(px,py,pz);
+  const mesh = new THREE.Mesh(parseObj(d.obj), matOf(d.mat));
+  mesh.position.set(-px,-py,-pz);
+  grp.add(mesh); craft.add(grp); N[name] = grp;
+}
+// 外段挂在内段下（钻石背两段折）
+for(const [o, i] of [["wing_U_R_o","wing_U_R_i"],["wing_U_L_o","wing_U_L_i"],
+                     ["wing_L_R_o","wing_L_R_i"],["wing_L_L_o","wing_L_L_i"]]){
+  const d = PART_DATA[o], pi = PART_DATA[i].pivot;
+  const [px,py,pz] = d.pivot;
+  const grp = new THREE.Group();
+  grp.position.set(px-pi[0], py-pi[1], pz-pi[2]);   // 相对内段
+  const mesh = new THREE.Mesh(parseObj(d.obj), matOf(d.mat));
+  mesh.position.set(-px,-py,-pz);
+  grp.add(mesh); N[i].add(grp); N[o] = grp;
+}
+
+// 桨盘扫掠环（示意 ⌀820）
+const ringMat = new THREE.MeshBasicMaterial({color:0x39d0d8, transparent:true,
+  opacity:.16, side:THREE.DoubleSide, depthWrite:false});
+for(const p of [[0,245,0],[0,0,245],[0,-245,0],[0,0,-245]]){
+  const rm = new THREE.Mesh(new THREE.RingGeometry(80, 410, 72), ringMat);
+  rm.rotation.y = Math.PI/2; rm.position.set(1460, p[1], p[2]);
+  craft.add(rm);
+}
+
+// ================= 相机 =================
+let camMode = 'follow';
+let theta = -1.15, phi = 0.30, dist = 9;
+let dragging = false, lx = 0, ly = 0;
+const el = renderer.domElement;
+el.addEventListener('pointerdown', e => {dragging=true; lx=e.clientX; ly=e.clientY;});
+addEventListener('pointerup', () => dragging=false);
+addEventListener('pointermove', e => {
+  if(!dragging) return;
+  theta -= (e.clientX-lx)*0.006;
+  phi   = Math.max(-1.35, Math.min(1.35, phi + (e.clientY-ly)*0.005));
+  lx=e.clientX; ly=e.clientY;
+});
+el.addEventListener('wheel', e => {
+  e.preventDefault();
+  dist = Math.max(2.2, Math.min(1500, dist * (1 + Math.sign(e.deltaY)*0.12)));
+}, {passive:false});
+
+const _t = new THREE.Vector3(), _c = new THREE.Vector3();
+function bodyCenter(){
+  _c.set(790, 0, 0);
+  craft.updateMatrixWorld();
+  return craft.localToWorld(_c.clone());
+}
+function updateCam(t){
+  let tgt, d;
+  if(camMode === 'follow'){
+    tgt = bodyCenter();
+    d = dist;
+  }else if(camMode === 'wide'){
+    tgt = new THREE.Vector3(-430, 85, 0);
+    d = 620;
+  }else{
+    tgt = bodyCenter();
+    d = dist;
+    theta += 0.0022;
+  }
+  _t.set(tgt.x + d*Math.cos(phi)*Math.cos(theta),
+         tgt.y + d*Math.sin(phi),
+         tgt.z + d*Math.cos(phi)*Math.sin(theta));
+  camera.position.copy(_t);
+  camera.lookAt(tgt);
+}
+
+// ---- 播放控制 ----
+// URL 参数：?ui=0 隐藏界面（便于直接录屏）、?t=30 从指定秒开始
+const Q = new URLSearchParams(location.search);
+let t = 0, playing = true, speed = 1, loop = true;
+const $ = id => document.getElementById(id);
+if(Q.get('ui') === '0') $('ui').classList.add('hide');
+if(Q.get('t')) t = Math.max(0, Math.min(T_END, parseFloat(Q.get('t'))));
+$('b-play').onclick = () => {playing = !playing; $('b-play').textContent = playing?'❚❚ 暂停':'▶ 播放';};
+$('b-rew').onclick  = () => {t = 0;};
+document.querySelectorAll('.spd').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.spd').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); speed = +b.dataset.s;
+});
+$('b-loop').onclick = () => {loop = !loop; $('b-loop').classList.toggle('on', loop);};
+$('b-follow').onclick = () => {camMode='follow'; dist=9;  syncCam();};
+$('b-wide').onclick   = () => {camMode='wide';   dist=620; syncCam();};
+$('b-orbit').onclick  = () => {camMode='orbit';  dist=7.5; syncCam();};
+function syncCam(){
+  ['follow','wide','orbit'].forEach(m => $('b-'+m).classList.toggle('on', camMode===m));
+}
+const bar = $('bar');
+function seek(e){
+  const r = bar.getBoundingClientRect();
+  t = Math.max(0, Math.min(T_END, (e.clientX-r.left)/r.width*T_END));
+}
+bar.addEventListener('pointerdown', e => {seek(e);
+  const mv = ev => seek(ev);
+  const up = () => {removeEventListener('pointermove', mv); removeEventListener('pointerup', up);};
+  addEventListener('pointermove', mv); addEventListener('pointerup', up);});
+addEventListener('keydown', e => {
+  if(e.code==='Space'){e.preventDefault(); $('b-play').click();}
+  if(e.key==='h'||e.key==='H') $('ui').classList.toggle('hide');
+  if(e.key==='ArrowLeft')  t = Math.max(0, t-0.2);
+  if(e.key==='ArrowRight') t = Math.min(T_END, t+0.2);
+});
+
+// 阶段色条
+(function buildBar(){
+  for(const p of PHASES){
+    const s = document.createElement('div');
+    s.className = 'seg';
+    s.style.left = (p.t0/T_END*100)+'%';
+    s.style.width = ((p.t1-p.t0)/T_END*100)+'%';
+    s.style.background = p.c;
+    s.innerHTML = '<span>'+p.id+'</span>';
+    bar.insertBefore(s, $('fill'));
+  }
+})();
+
+// ================= 渲染循环 =================
+let spinAng = 0, last = performance.now();
+function frame(now){
+  const dt = Math.min(0.06, (now-last)/1000); last = now;
+  if(playing){
+    t += dt*speed;
+    if(t >= T_END){ if(loop) t = 0; else {t = T_END; playing=false; $('b-play').textContent='▶ 播放';} }
+  }
+  const s = sample(t);
+
+  // 机体位置/姿态
+  craft.position.set(s.x, s.y, 0);
+  craft.rotation.z = THREE.MathUtils.degToRad(s.rz);
+
+  // 双翼折叠（钻石背两段折）：内段 ±90°，外段相对 ±168°
+  const F = s.fold, D = Math.PI/180;
+  N.wing_U_R_i.rotation.y =  F*90*D;   N.wing_U_R_o.rotation.y =  F*168*D;
+  N.wing_U_L_i.rotation.y = -F*90*D;   N.wing_U_L_o.rotation.y = -F*168*D;
+  N.wing_L_R_i.rotation.y =  F*90*D;   N.wing_L_R_o.rotation.y =  F*168*D;
+  N.wing_L_L_i.rotation.y = -F*90*D;   N.wing_L_L_o.rotation.y = -F*168*D;
+  // 外段折回后 Y 向分层（右外 +18 / 左外 +36 mm；下翼对称向下），避免左右穿透
+  N.wing_U_R_o.position.y =  18*F;  N.wing_U_L_o.position.y =  36*F;
+  N.wing_L_R_o.position.y = -18*F;  N.wing_L_L_o.position.y = -36*F;
+
+  // 桨自转（视觉转速 12 rps，避免频闪）
+  spinAng += dt * s.spin * 12 * 2*Math.PI * speed;
+  for(let k=0;k<4;k++) N['prop_'+k].rotation.x = spinAng;
+
+  // 全动平尾
+  N.elevator.rotation.z = THREE.MathUtils.degToRad(s.el);
+
+  updateCam(t);
+
+  // ---- HUD ----
+  const p = phaseAt(t);
+  $('p-badge').textContent = p.id;
+  $('p-badge').style.background = p.c;
+  $('p-name').textContent = p.n;
+  $('p-desc').textContent = p.d;
+  $('t-t').textContent = t.toFixed(1)+' s';
+  $('t-h').textContent = Math.round(s.y)+' m';
+  const a = sample(Math.max(0,t-0.06)), b = sample(Math.min(T_END,t+0.06));
+  const v = Math.hypot(b.x-a.x, b.y-a.y)/0.12;
+  $('t-v').textContent = v.toFixed(1)+' m/s';
+  $('t-p').textContent = (s.rz>=89?'机头朝下 -90°':(s.rz>0.5?'过渡 '+(-s.rz).toFixed(0)+'°':
+        (s.rz<-0.5?'仰 '+(-s.rz).toFixed(0)+'°':'水平 0°')));
+  const pr = $('t-prop');
+  pr.textContent = s.spin>0.5 ? '运转' : '停转';
+  pr.className = 'v ' + (s.spin>0.5 ? 'on' : 'off');
+  const pi = $('t-pitch');
+  pi.textContent = s.thr>0.5 ? (s.y<100 ? '巡航档' : '大距档') : '顺桨';
+  pi.className = 'v ' + (s.thr>0.5 ? 'on' : 'off');
+  $('t-wing').textContent = s.fold>0.5 ? '收拢' : (s.fold<0.05 ? '展开锁定' : '展开中 '+Math.round((1-s.fold)*100)+'%');
+  $('t-el').textContent = s.el.toFixed(0)+'°';
+  $('fill').style.width = (t/T_END*100)+'%';
+  $('cur').style.left = (t/T_END*100)+'%';
+  $('tval').textContent = t.toFixed(1)+' / '+T_END.toFixed(1)+' s';
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(frame);
+}
+
+function resize(){
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w/h; camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+syncCam();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

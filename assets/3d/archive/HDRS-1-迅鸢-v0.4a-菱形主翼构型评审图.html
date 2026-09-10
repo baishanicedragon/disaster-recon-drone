@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>HDRS-1 迅鸢 v0.4a 菱形主翼构型评审图</title>
+<style>
+  body{margin:0;background:#eef1f5;font-family:"Microsoft YaHei",system-ui,sans-serif;color:#1a2230;}
+  .wrap{max-width:1180px;margin:0 auto;padding:18px;}
+  h1{font-size:20px;margin:4px 0 2px;}
+  .sub{font-size:13px;color:#4a5868;margin-bottom:14px;}
+  .card{background:#fff;border:1px solid #ccd3dd;border-radius:10px;padding:14px 16px;margin:14px 0;box-shadow:0 1px 3px rgba(20,30,50,.06);}
+  .card h2{font-size:15px;margin:0 0 6px;border-left:4px solid #2a6fb0;padding-left:8px;}
+  svg{width:100%;height:auto;display:block;}
+  table{border-collapse:collapse;width:100%;font-size:12.5px;margin:6px 0;}
+  th,td{border:1px solid #cfd6e0;padding:4px 8px;text-align:left;}
+  th{background:#f2f5fa;}
+  .warn{color:#c0392b;font-weight:bold;}
+  .ok{color:#1e7a34;}
+  .note{font-size:12px;color:#4a5868;margin-top:4px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:860px){.grid2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>HDRS-1 迅鸢 · 主翼改菱形机翼（学 JDAM Diamond Back）</h1>
+<div class="sub">v0.4a 构型评审稿 · 2026-09-09 · 面积保 0.63 m² / 翼展 1.80 m / 前后尖距 700 mm / AR 5.1 / 背脊上置收纳 · 全图单位 mm</div>
+
+<!-- ① 展开态菱形翼 -->
+<div class="card">
+<h2>① 展开态几何 —— 每侧 = 前翼条 + 后翼条（翼尖铰接），整体呈菱形</h2>
+<svg viewBox="-40 -360 1000 1160" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei">
+  <!-- 轴线 -->
+  <line x1="0" y1="0" x2="860" y2="0" stroke="#9aa4b2" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="866" y="6" fill="#7a8494" font-size="12">机身轴线 y=0（STA 550→1250）</text>
+  <!-- 机身背脊示意 -->
+  <rect x="100" y="-8" width="700" height="16" fill="#d8dde4" stroke="#8a93a2"/>
+  <text x="100" y="-16" fill="#5a6474" font-size="12">机身上表面（背脊线，宽 ~140）</text>
+  <!-- 菱形主翼 左半 -->
+  <polygon points="140,0 400,-640 710,0 400,640" fill="rgba(46,139,87,.16)" stroke="#2e8b57" stroke-width="2.5"/>
+  <!-- 前/后翼条分界虚线（沿 y 方向过翼尖） -->
+  <line x1="400" y1="-640" x2="400" y2="640" stroke="#2e8b57" stroke-width="1" stroke-dasharray="5,4"/>
+  <!-- 顶点标注 -->
+  <circle cx="140" cy="0" r="5" fill="#2e8b57"/><text x="130" y="26" fill="#2e8b57" font-size="14" font-weight="bold">前尖 A</text>
+  <text x="150" y="44" fill="#2e8b57" font-size="12">(STA 550, 0)</text>
+  <circle cx="710" cy="0" r="5" fill="#2e8b57"/><text x="716" y="26" fill="#2e8b57" font-size="14" font-weight="bold">后尖 B</text>
+  <text x="716" y="44" fill="#2e8b57" font-size="12">(STA 1250, 0)</text>
+  <circle cx="400" cy="-640" r="6" fill="#c0392b"/>
+  <text x="300" y="-668" fill="#c0392b" font-size="14" font-weight="bold">翼尖 T（前/后翼条铰接点）</text>
+  <circle cx="400" cy="640" r="6" fill="#c0392b"/>
+  <!-- 翼展尺寸线 -->
+  <line x1="400" y1="-640" x2="400" y2="640" stroke="#c0392b" stroke-width="1"/>
+  <line x1="386" y1="-660" x2="414" y2="-660" stroke="#c0392b" stroke-width="2"/>
+  <line x1="386" y1="660" x2="414" y2="660" stroke="#c0392b" stroke-width="2"/>
+  <text x="414" y="-650" fill="#c0392b" font-size="15" font-weight="bold">翼展 b = 1800</text>
+  <!-- 前后尖距尺寸线 -->
+  <line x1="140" y1="90" x2="710" y2="90" stroke="#1a4f8a" stroke-width="1.2"/>
+  <line x1="140" y1="78" x2="140" y2="102" stroke="#1a4f8a" stroke-width="2"/>
+  <line x1="710" y1="78" x2="710" y2="102" stroke="#1a4f8a" stroke-width="2"/>
+  <text x="425" y="112" fill="#1a4f8a" font-size="14" font-weight="bold" text-anchor="middle">前后尖距 c = 700（轴向弦分布：中线处弦最大 700 → 翼尖收为 0）</text>
+  <!-- 翼条长标注 -->
+  <text x="120" y="-330" fill="#8a5a00" font-size="13">前翼条 A→T ≈ 966</text>
+  <text x="640" y="-330" fill="#8a5a00" font-size="13">后翼条 T→B ≈ 966</text>
+  <!-- 机翼在轴上的覆盖区间标注 -->
+  <text x="425" y="150" fill="#1a4f8a" font-size="13" text-anchor="middle">前尖 A = STA 550 · 翼尖线 x = STA 900（菱形中心，= 气动中心 AC）· 后尖 B = STA 1250</text>
+  <!-- 数据框 -->
+  <g transform="translate(30,-320)">
+    <rect x="0" y="0" width="330" height="118" fill="#f7f9fc" stroke="#c3ccd8" rx="6"/>
+    <text x="10" y="18" fill="#1a2230" font-size="13" font-weight="bold">参数（面积守恒 S=c·b/2=0.63）</text>
+    <text x="10" y="38" fill="#333" font-size="12">S = 0.63 m²（不变）  b = 1.80 m（-0.2）</text>
+    <text x="10" y="56" fill="#333" font-size="12">c = 700 mm  AR = 5.1（原 6.35）</text>
+    <text x="10" y="74" fill="#333" font-size="12">单翼条长 ≈ 966 mm  半展 900 mm</text>
+    <text x="10" y="94" fill="#8a5a00" font-size="12">巡航功率 ≈ 739 W（+176 W，+31%）</text>
+    <text x="10" y="112" fill="#1a4f8a" font-size="12">升力中心 ≈ 菱形几何中心 = STA 900（AC 不变）</text>
+  </g>
+</svg>
+<div class="note">展开态：左右对称菱形。每侧三角翼片由前、后两翼条在翼尖 T 铰接构成（学 Diamond Back 串式联动）。升力面心仍在 STA 900 → 配平几乎不变。</div>
+</div>
+
+<!-- ② 轴向布置 -->
+<div class="card">
+<h2>② 全机轴向布置 —— 菱形后尖 B（STA1250）到 4 桨桨臂（STA1425）净空 175 mm</h2>
+<svg viewBox="0 0 920 560" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei">
+  <line x1="80" y1="280" x2="920" y2="280" stroke="#9aa4b2" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="70" y="18" fill="#7a8494" font-size="12">k=0.28 px/mm</text>
+  <!-- 机身 -->
+  <rect x="80" y="260" width="444" height="40" fill="#d8dde4" stroke="#8a93a2"/>
+  <!-- A吸能头锥 -->
+  <polygon points="80,260 56,280 80,300" fill="#e8b4b8" stroke="#b03a48"/>
+  <text x="60" y="250" fill="#b03a48" font-size="11">A 吸能</text>
+  <!-- 主翼菱形 -->
+  <polygon points="234,280 332,28 430,280 332,532 234,280" fill="rgba(46,139,87,.14)" stroke="#2e8b57" stroke-width="1.6"/>
+  <polygon points="234,280 136,28 430,280 136,532" fill="none" stroke="#2e8b57" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="300" y="182" fill="#2e8b57" font-size="12">主翼菱形（右半展开示意）</text>
+  <!-- 顶点竖线标注 -->
+  <line x1="234" y1="258" x2="234" y2="302" stroke="#2e8b57" stroke-width="1.2"/>
+  <text x="234" y="318" fill="#2e8b57" font-size="12" text-anchor="middle">前尖 STA550</text>
+  <line x1="430" y1="258" x2="430" y2="302" stroke="#2e8b57" stroke-width="1.2"/>
+  <text x="430" y="318" fill="#2e8b57" font-size="12" text-anchor="middle">后尖 STA1250</text>
+  <!-- 净空箭头 -->
+  <line x1="430" y1="252" x2="479" y2="252" stroke="#c0392b" stroke-width="2"/>
+  <text x="454" y="242" fill="#c0392b" font-size="13" font-weight="bold" text-anchor="middle">175</text>
+  <!-- 桨架/桨环 -->
+  <g stroke="#1a6fb0" fill="none">
+    <line x1="479" y1="280" x2="479" y2="211"/><line x1="479" y1="280" x2="479" y2="349"/>
+    <line x1="479" y1="280" x2="560" y2="280"/><line x1="479" y1="280" x2="398" y2="280"/>
+  </g>
+  <circle cx="479" cy="211" r="4" fill="#1a6fb0"/><circle cx="479" cy="349" r="4" fill="#1a6fb0"/>
+  <circle cx="560" cy="280" r="4" fill="#1a6fb0"/><circle cx="398" cy="280" r="4" fill="#1a6fb0"/>
+  <circle cx="479" cy="280" r="2.5" fill="#c0392b"/>
+  <text x="490" y="206" fill="#1a6fb0" font-size="12">4 桨 X 环（桨盘面 STA1460）</text>
+  <!-- 桨外廓 -->
+  <circle cx="560" cy="280" r="46" fill="none" stroke="#1a6fb0" stroke-width="0.8" stroke-dasharray="2,2"/>
+  <circle cx="398" cy="280" r="46" fill="none" stroke="#1a6fb0" stroke-width="0.8" stroke-dasharray="2,2"/>
+  <!-- 十字尾翼 -->
+  <rect x="500" y="258" width="23" height="44" fill="#dcead8" stroke="#3e6b46"/>
+  <rect x="512" y="215" width="4" height="40" fill="#cfe0ec" stroke="#3e5d7a"/>
+  <text x="532" y="276" fill="#3e6b46" font-size="12">十字尾翼</text>
+  <!-- 站位刻度 -->
+  <g font-size="11" fill="#7a8494">
+    <text x="80" y="340">0</text><text x="192" y="340">400</text><text x="304" y="340">800</text>
+    <text x="416" y="340">1200</text><text x="528" y="340">1600</text>
+  </g>
+  <!-- 关键段文字 -->
+  <text x="140" y="380" fill="#5a6474" font-size="12">载荷舱/电池压舱（STA ~450–920）</text>
+  <text x="140" y="396" fill="#5a6474" font-size="12">主翼覆盖 STA 550–1250（机身中后段）</text>
+</svg>
+<div class="note"><span class="ok">✓ 后尖 B(STA1250) 停在桨臂起点(STA1425)之前，净空 175 mm</span>；展开态菱形主翼与尾段 4 桨环、十字尾翼在轴向上不重叠。</div>
+</div>
+
+<!-- ③ 收纳态 -->
+<div class="card">
+<h2>③ 收纳态（背脊上置，纵向叠合）—— 单条叠合体 ~966 mm，中心 STA850 时后端距桨臂净空 92 mm</h2>
+<svg viewBox="0 0 960 470" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei">
+  <text x="70" y="22" fill="#7a8494" font-size="12">k=0.30 px/mm · 侧视（左=机头）</text>
+  <!-- 地面基线 -->
+  <line x1="50" y1="330" x2="940" y2="330" stroke="#c3ccd8" stroke-width="1"/>
+  <!-- 机身（侧视 ⌀140） -->
+  <rect x="80" y="222" width="474" height="42" fill="#d8dde4" stroke="#8a93a2"/>
+  <polygon points="80,222 56,243 80,264" fill="#e8b4b8" stroke="#b03a48"/>
+  <text x="76" y="180" fill="#5a6474" font-size="12">机身 ⌀140（全长 1580）</text>
+  <!-- 背脊整流罩（示意） -->
+  <rect x="180" y="204" width="334" height="18" fill="#c9d3df" stroke="#8a93a2"/>
+  <text x="190" y="196" fill="#5a6474" font-size="12">背脊整流段（收纳平台，STA ~400–1400）</text>
+  <!-- 叠合翼条组（中心 STA850 → 367–1333） -->
+  <rect x="190" y="172" width="290" height="22" rx="4" fill="#b98a2e" opacity=".85"/>
+  <text x="335" y="164" fill="#8a5a00" font-size="13" font-weight="bold" text-anchor="middle">左右翼条叠合体 966 长（厚 ~20–30，中心 STA850）</text>
+  <!-- 前/后端位置竖线 -->
+  <line x1="190" y1="222" x2="190" y2="240" stroke="#8a5a00" stroke-width="1"/>
+  <text x="190" y="252" fill="#8a5a00" font-size="12" text-anchor="middle">前端 STA367</text>
+  <line x1="480" y1="222" x2="480" y2="240" stroke="#8a5a00" stroke-width="1"/>
+  <text x="480" y="252" fill="#8a5a00" font-size="12" text-anchor="middle">后端 STA1333</text>
+  <!-- 净空到桨臂 -->
+  <line x1="480" y1="150" x2="508" y2="150" stroke="#c0392b" stroke-width="2"/>
+  <text x="494" y="142" fill="#c0392b" font-size="13" font-weight="bold" text-anchor="middle">净空 92</text>
+  <!-- 桨臂起点 -->
+  <line x1="508" y1="130" x2="508" y2="222" stroke="#1a6fb0" stroke-width="2"/>
+  <text x="508" y="122" fill="#1a6fb0" font-size="12">桨臂起 STA1425</text>
+  <!-- 桨环尾段 -->
+  <rect x="508" y="196" width="46" height="94" fill="none" stroke="#1a6fb0" stroke-width="1.4"/>
+  <text x="560" y="214" fill="#1a6fb0" font-size="12">桨环+十字尾翼</text>
+  <!-- 舱段位置 -->
+  <text x="110" y="300" fill="#b03a48" font-size="12">A/B 吸能（0–400）</text>
+  <text x="250" y="300" fill="#5a6474" font-size="12">电池/载荷舱盖区</text>
+  <line x1="392" y1="222" x2="392" y2="206" stroke="#8a93a2" stroke-width="1"/>
+  <text x="392" y="318" fill="#5a6474" font-size="12">主翼区中心 STA900</text>
+  <!-- 说明 -->
+  <text x="110" y="360" fill="#4a5868" font-size="13">收纳逻辑：前翼条(550→900) + 后翼条(900→1250) 绕翼尖铰链对折 → 966 长单条，纵向平铺背脊。</text>
+  <text x="110" y="380" fill="#4a5868" font-size="13">左右两组上下两层叠放（高约 50–80），宽 ≈ 根端弦 ~350–400，落在 ⌀630 包络内。</text>
+  <text x="110" y="400" fill="#c0392b" font-size="13">⚠ 疑点：中心 STA850 → 后端距桨臂净空仅 92 mm；若想加大净空，收纳中心前移会侵占 A/B 吸能段上方快拆区。</text>
+</svg>
+</div>
+
+<!-- ④ 前视包络 -->
+<div class="card">
+<h2>④ 前视包络 —— 收纳态落在 ⌀630 运输包络内</h2>
+<svg viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei">
+  <!-- 包络圆 -->
+  <circle cx="300" cy="215" r="189" fill="none" stroke="#c0392b" stroke-width="1.6" stroke-dasharray="6,4"/>
+  <text x="300" y="36" fill="#c0392b" font-size="13" font-weight="bold" text-anchor="middle">运输包络 ⌀630</text>
+  <!-- 机身圆 -->
+  <circle cx="300" cy="215" r="42" fill="#d8dde4" stroke="#8a93a2"/>
+  <text x="300" y="220" fill="#5a6474" font-size="12" text-anchor="middle">机身</text>
+  <!-- 收纳叠合 -->
+  <rect x="150" y="148" width="300" height="26" rx="6" fill="#b98a2e" opacity=".9"/>
+  <text x="300" y="168" fill="#fff" font-size="12" text-anchor="middle">收纳叠合体（宽~400 高~60）</text>
+  <!-- 收纳时桨环 -->
+  <circle cx="300" cy="300" r="70" fill="none" stroke="#1a6fb0" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <text x="300" y="305" fill="#1a6fb0" font-size="11" text-anchor="middle">桨环包络(收纳)</text>
+  <!-- 展开翼尖 -->
+  <line x1="300" y1="215" x2="588" y2="60" stroke="#2e8b57" stroke-width="1.4" stroke-dasharray="5,4"/>
+  <line x1="300" y1="215" x2="12" y2="60" stroke="#2e8b57" stroke-width="1.4" stroke-dasharray="5,4"/>
+  <text x="300" y="74" fill="#2e8b57" font-size="12" text-anchor="middle">展开翼尖 ±900（超出包络，仅运输时折叠）</text>
+</svg>
+<div class="note">横向最大 ~400 mm &lt; 630 ✓；纵向 966 段放置于 STA367–1333（总长 1.6 m 内）✓。</div>
+</div>
+
+<!-- ⑤ 疑点 -->
+<div class="card">
+<h2>⑤ 待你确认的 5 点</h2>
+<table>
+<tr><th style="width:30px">#</th><th style="width:120px">项</th><th>内容</th></tr>
+<tr><td>1</td><td><span class="warn">收纳净空</span></td><td>叠合条中心 STA850 → 后端距桨臂(1425)仅 <b>92 mm</b>。够不够？或接受收纳中心偏前、与吸能筒快拆协调？</td></tr>
+<tr><td>2</td><td><span class="warn">弦分布</span></td><td>菱形在机身中线处弦长 <b>700 mm</b>（STA550–1250 整段被翼覆盖）——主翼不再是一对"小翼片"，而是机背一大片三角翼面，对舱盖维护/重心配平的视觉影响需接受。</td></tr>
+<tr><td>3</td><td>控制面</td><td>菱形翼无传统副翼。建议 <b>后翼条外段做升降副翼(elevon)</b>：巡航滚转 + 辅助俯仰；改平段仍由十字尾翼水平片主拉。确认？</td></tr>
+<tr><td>4</td><td><span class="warn">功率</span></td><td>巡航 563→739 W（+31%）：电池 12S4P 航时预算需重算（长航段可能吃紧，短航段无碍）。接受？</td></tr>
+<tr><td>5</td><td>展开作动</td><td>机构采用 Diamond Back 式：<b>后尖 B 沿背脊滑轨前后滑动</b>，收拢滑向前、展开滑向后锁死（滑轨行程 ~350 mm 量级）。是否按此细化？</td></tr>
+</table>
+<div class="note">已确认不变：面积 0.63 / 翼展 1.80 / 前后尖距 700 / AR 5.1 / 背脊上置收纳 / 升力中心 STA900 配平不动。</div>
+</div>
+
+</div></body></html>
